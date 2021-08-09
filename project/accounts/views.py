@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.contrib.auth import login as auth_login
 from django.shortcuts import render, redirect
 
@@ -17,3 +16,6 @@ def signup(request):
     else:
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
+
+
+

@@ -1,5 +1,6 @@
 {% load static %}{% load widget_tweaks %}
-<html>
+<!DOCTYPE html>
+<html xml:lang>
 
 <head>
     <meta charset="utf-8">
@@ -38,12 +39,12 @@
                 <form class="form-inline ml-auto">
                     <div class="search-container">
                         <form action="/action_page.php">
-                            <input type="text" placeholder="Search.." name="search">
+                            <input type="text" placeholder="Search..." name="search">
                             <button type="button" class="btn btn-outline-success">Search</button>
                         </form>
                     </div>
-                    <a href="#" class="btn btn-outline-secondary">Log in</a>
-                    <a href="#" class="btn btn-primary ml-2">Sign up</a>
+                    <a href="{% url 'login' %}" class="btn btn-outline-secondary">Log in</a>
+                    <a href="{% url 'signup' %}" class="btn btn-primary ml-2">Sign up</a>
                 </form>
                 {% endif %}
             </div>

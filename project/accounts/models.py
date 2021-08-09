@@ -1,4 +1,4 @@
-from django.contrib.auth import login 
+from django.db import models
 
 
 # Create your models here.
