@@ -1,0 +1,28 @@
+{% extends 'base.html' %} {% block breadcrumb %}
+<li class="breadcrumb-item active">Events</li>
+{% endblock %} {% block content %}
+<table class="table">
+    <thead class="thead-inverse">
+        <tr>
+            <th>Events</th>
+            <th>Replies</th>
+            <th>Last Reply</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for event in events %}
+        <tr>
+            <td>
+                <a href="#">{{ event.name }}</a>
+                <small class="text-muted d-block">{{ event.description }}</small>
+            </td>
+            <td class="align-middle">
+            </td>
+            <td class="align-middle">
+
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
