@@ -1,0 +1,11 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Plan an event{% endblock %} {% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'home' %}">Events</a></li>
+<li class="breadcrumb-item active">Plan an event</li>
+{% endblock %} {% block content %}
+
+<form method="post" class="mb-4">
+    {% csrf_token %} {% include 'includes/form.html' %}
+    <button type="submit" class="btn btn-success">Plan a event</button>
+</form>
+
+{% endblock %}

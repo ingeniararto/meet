@@ -23,9 +23,19 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^$', views.home, name='home'),
+    
+    re_path(r'^event/(?P<pk>\d+)/$', views.event, name='event'),
+    re_path(r'^new_event/$', views.new_event, name='new_event'),
+    re_path(r'^event/(?P<pk>\d+)/new_reply/$', views.new_reply, name='new_reply'),
+    
+
     re_path(r'^signup/$', accounts_views.signup, name='signup'),
     re_path(r'^login/$', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
-    re_path(r'^events/(?P<pk>\d+)/$', views.event, name='event'),
     re_path(r'^logout/$', auth_views.LogoutView.as_view(), name='logout'),
+# password change
+    re_path(r'^settings/password/$', auth_views.PasswordChangeView.as_view(template_name='password_change.html'),
+    name='password_change'),
+    re_path(r'^settings/password/done/$', auth_views.PasswordChangeDoneView.as_view(template_name='password_change_done.html'),
+    name='password_change_done'),
     
 ]

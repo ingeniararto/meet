@@ -3,15 +3,15 @@
 {% endblock %} {% block content %}
 <table class="table">
     <div class="mb-4">
-        <a href="#" class="btn btn-primary">New event</a>
+        <a href="{% url 'new_event' %}" class="btn btn-primary">New event</a>
     </div>
     <thead class="thead-inverse">
         <tr>
-            <th>Event</th>
-            <th>Creater</th>
-            <th>Replies</th>
-            <th>Views</th>
-            <th>Last Update</th>
+            <th scope="col">Event</th>
+            <th scope="col">Creater</th>
+            <th scope="col">Replies</th>
+            <th scope="col">Attendees</th>
+            <th scope="col">Date</th>
         </tr>
     </thead>
     <tbody>
@@ -21,10 +21,10 @@
                 <a href="{% url 'event' event.pk %}">{{ event.name }}</a>
                 <small class="text-muted d-block">{{ event.description }}</small>
             </td>
-            <td>-</td>
+            <td> Created by {{ event.created_by.username }} </td>
+            <td> {{ event.get_replies_count }} </td>
             <td>0</td>
-            <td>0</td>
-            <td>0</td>
+            <td> {{ event.date }} </td>
         </tr>
         {% endfor %}
     </tbody>
