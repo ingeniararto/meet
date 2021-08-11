@@ -16,7 +16,6 @@ def event(request, pk):
     return render(request, 'event.html', {'event': one_event})
 
 def new_reply(request,pk):
-    print("ASDFGHJDFGH",request)
     one_event = get_object_or_404(Event, pk=pk)
     if request.method == 'POST':
         form = ReplyForm(request.POST)

@@ -21,7 +21,6 @@ class Event(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.CASCADE ,null=True ,related_name="events")
     created_at = models.DateTimeField(auto_now_add=True,null=True)
     date = models.DateTimeField(null=True)
-    #updated_at=models.DateTimeField(null=True)
 
 
     def get_replies_count(self):

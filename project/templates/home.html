@@ -2,9 +2,11 @@
 <li class="breadcrumb-item active">Events</li>
 {% endblock %} {% block content %}
 <table class="table">
+    {% if user.is_authenticated %}
     <div class="mb-4">
         <a href="{% url 'new_event' %}" class="btn btn-primary">New event</a>
     </div>
+    {% endif %}
     <thead class="thead-inverse">
         <tr>
             <th scope="col">Event</th>
@@ -12,6 +14,7 @@
             <th scope="col">Replies</th>
             <th scope="col">Attendees</th>
             <th scope="col">Date</th>
+            <th scope="col">Payment</th>
         </tr>
     </thead>
     <tbody>
@@ -25,6 +28,7 @@
             <td> {{ event.get_replies_count }} </td>
             <td>0</td>
             <td> {{ event.date }} </td>
+            <td> {% if event.payment_type == 'Not free' %} {{event.payment}} TL {% else %} {{ event.payment_type }} {% endif %}</td>
         </tr>
         {% endfor %}
     </tbody>
