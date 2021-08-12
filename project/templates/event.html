@@ -21,7 +21,7 @@
                 <div class="row mb-1">
                 </div>
                 {% if event.created_by == user %}
-                <a href="#" class="btn btn-primary" role="button">Edit</a>{% endif %} {% if user.is_authenticated %}
+                <a href="#" class="btn btn-info" role="button">Edit</a>{% endif %} {% if user.is_authenticated %}
                 <a href="{% url 'new_reply' event.pk %}" class="btn btn-primary">New reply</a> {% endif %}
             </div>
         </div>
@@ -35,7 +35,14 @@
                 <small class="text-muted">By {{ reply.created_by.username }} at {{ reply.created_at }}</small>
             </div>
         </div>
-        {{ reply.message }}
+        <div class="row mb-4">
+            <div class="col-10">
+                {{ reply.message }}
+            </div>
+        </div>
+        <div> {% if reply.created_by == user %}
+            <a href="#" class="btn btn-info" role="button">Edit</a>{% endif %}
+        </div>
     </div>
 </div>
 {% endfor %} {% endblock %}

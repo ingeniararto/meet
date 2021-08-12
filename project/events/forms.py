@@ -1,3 +1,4 @@
+from categories.models import Category
 from django import forms
 from .models import Event, Reply
 
@@ -32,10 +33,14 @@ class NewEventForm(forms.ModelForm):
         ),
         help_text = 'In terms of TL.'
     )
+    category = forms.ChoiceField(
+        required = False,
+        choices = Category.CATEGORY_CHOICES
+    )
 
     class Meta:
         model = Event
-        fields = ['name', 'description', 'date', 'payment_type','payment']
+        fields = ['name', 'description', 'date', 'payment_type','payment','category']
 
 class ReplyForm(forms.ModelForm):
     message = forms.CharField(

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'events',
     'widget_tweaks',
     'accounts',
+    'categories',
 ]
 
 MIDDLEWARE = [

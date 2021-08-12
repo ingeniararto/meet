@@ -30,7 +30,7 @@ def registry(request):
         form = RegisterForm()
     return render(request, 'registry.html', {'form': form})
 
-def my_account(request,id):
+def account(request,id):
     profile = get_object_or_404(Profile, user=get_object_or_404(User, id=id))
-    return render(request, 'my_account.html', {'profile': profile})
+    return render(request, 'account.html', {'profile': profile})
 

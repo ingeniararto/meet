@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path
-from events import views
 from accounts import views as accounts_views
+import categories
 from events import views
 from django.contrib.auth import views as auth_views
+from categories import views as cat_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,13 +34,14 @@ urlpatterns = [
     re_path(r'^registry/$', accounts_views.registry, name='registry'),
     re_path(r'^login/$', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     re_path(r'^logout/$', auth_views.LogoutView.as_view(), name='logout'),
-    re_path(r'^my_account/(?P<id>\d+)/$', accounts_views.my_account, name='my_account'),
+    re_path(r'^account/(?P<id>\d+)/$', accounts_views.account, name='account'),
 
+
+    re_path(r'^categories/$', cat_views.categories, name='categories'),
+    re_path(r'^category/(?P<id>\d+)/$', cat_views.category, name='category'),
 
 # password change
-    re_path(r'^settings/password/$', auth_views.PasswordChangeView.as_view(template_name='password_change.html'),
-    name='password_change'),
-    re_path(r'^settings/password/done/$', auth_views.PasswordChangeDoneView.as_view(template_name='password_change_done.html'),
-    name='password_change_done'),
+    re_path(r'^settings/password/$', auth_views.PasswordChangeView.as_view(template_name='password_change.html'), name='password_change'),
+    re_path(r'^settings/password/done/$', auth_views.PasswordChangeDoneView.as_view(template_name='password_change_done.html'), name='password_change_done'),
     
 ]

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE
+from categories.models import Category
 
 # Create your models here.
 class Event(models.Model):
@@ -21,7 +22,7 @@ class Event(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.CASCADE ,null=True ,related_name="events")
     created_at = models.DateTimeField(auto_now_add=True,null=True)
     date = models.DateTimeField(null=True)
-
+    category = models.ForeignKey(Category, on_delete=CASCADE, null=True, related_name="events")
 
     def get_replies_count(self):
         return Reply.objects.filter(event=self).count()

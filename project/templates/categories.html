@@ -1,0 +1,17 @@
+{% extends 'base.html' %} {% load static %}{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'home' %}">Events</a></li>
+<li class="breadcrumb-item active">Categories</li>
+{% endblock %}{% block content %} {% block stylesheet %}
+<link rel="stylesheet" href="{% static 'css/categories.css' %}"> {% endblock %}
+
+<body>
+    {% for category in categories %}
+    <div class="card mb-3">
+        <img src="https://mdbootstrap.com/img/new/slides/041.jpg" alt="Avatar" style="width:100%">
+        <div class="container">
+            <h4><b> {{category.name}}</b></h4>
+        </div>
+    </div>
+    {% endfor %}
+</body>
+{% endblock %}
