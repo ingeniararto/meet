@@ -1,37 +1,38 @@
-{% extends 'base.html' %} {% block breadcrumb %}
-<li class="breadcrumb-item active">Events</li>
-{% endblock %} {% block content %}
-<table class="table">
-    {% if user.is_authenticated %}
-    <div class="mb-4">
-        <a href="{% url 'new_event' %}" class="btn btn-primary">New event</a>
-    </div>
-    {% endif %}
-    <thead class="thead-inverse">
-        <tr>
-            <th scope="col">Event</th>
-            <th scope="col">Creater</th>
-            <th scope="col">Replies</th>
-            <th scope="col">Attendees</th>
-            <th scope="col">Date</th>
-            <th scope="col">Payment</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for event in events %}
-        <tr>
-            <td>
-                <a href="{% url 'event' event.pk %}">{{ event.name }}</a>
-                <small class="text-muted d-block">{{ event.description }}</small>
-                <small class="text-info d-block">{{ event.category }} (category)</small>
-            </td>
-            <td> Created by {{ event.created_by.username }} </td>
-            <td> {{ event.get_replies_count }} </td>
-            <td>0</td>
-            <td> {{ event.date }} </td>
-            <td> {% if event.payment_type == 'Not free' %} {{event.payment}} TL {% else %} {{ event.payment_type }} {% endif %}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% endblock %}
+{% extends 'base.html' %} {% load static %} {% block stylesheet %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}"> {% endblock %} {% block breadcrumb %}
+<li class="breadcrumb-item active">Home</li>
+{% endblock %}{% block content %}
+<ul class="cards">
+    <li>
+        <a href="{% url 'categories' %}" class="card">
+            <img src="https://i.imgur.com/oYiTqum.jpg" class="card__image" alt="" />
+            <div class="card__overlay">
+                <div class="card__header">
+                    <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>
+
+                    <div class="card__header-text">
+                        <h3 class="card__title">Categories</h3>
+                        <span class="card__status"> 5 </span>
+                    </div>
+                </div>
+                <p class="card__description">Concert/Food/Party/Sport/Study </p>
+            </div>
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'all_events' %}" class="card">
+            <img src="https://i.imgur.com/2DhmtJ4.jpg" class="card__image" alt="" />
+            <div class="card__overlay">
+                <div class="card__header">
+                    <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>
+
+                    <div class="card__header-text">
+                        <h3 class="card__title">Events</h3>
+                        <span class="card__status">{{number_of_events}}</span>
+                    </div>
+                </div>
+                <p class="card__description"></p>
+            </div>
+        </a>
+    </li>
+</ul> {%endblock%}

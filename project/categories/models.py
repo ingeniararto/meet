@@ -16,3 +16,5 @@ class Category(models.Model):
         (STUDY, "Study"),
     )
     name = models.CharField(max_length=10 ,choices=CATEGORY_CHOICES ,default=ELSE)
+
+    

@@ -1,6 +1,6 @@
-{% extends 'base.html' %} {% block title %} {{ category.name }} - {{ block.super }} {% endblock %} {% block breadcrumb %}
-<li class="breadcrumb-item"><a href="{% url 'categories' %}">Categories</a></li>
-<li class="breadcrumb-item active">{{ category.name }}</li>
+{% extends 'base.html' %} {% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+<li class="breadcrumb-item active">Events</li>
 {% endblock %} {% block content %}
 <table class="table">
     {% if user.is_authenticated %}

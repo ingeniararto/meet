@@ -1,5 +1,6 @@
 {% extends 'base.html' %} {% load static %} {% block title %}Post a reply{% endblock %} {% block breadcrumb %}
-<li class="breadcrumb-item"><a href="{% url 'home' %}">Events</a></li>
+<li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+<li class="breadcrumb-item"><a href="{% url 'all_events' %}">Events</a></li>
 <li class="breadcrumb-item"><a href="{% url 'event' event.pk %}">{{ event.name }}</a></li>
 <li class="breadcrumb-item active">Post a reply</li>
 {% endblock %} {% block content %}

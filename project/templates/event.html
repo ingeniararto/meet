@@ -1,5 +1,6 @@
 {% extends 'base.html' %} {% block title %} {{ event.name }} - {{ block.super }} {% endblock %} {% block breadcrumb %}
-<li class="breadcrumb-item"><a href="{% url 'home' %}">Events</a></li>
+<li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+<li class="breadcrumb-item"><a href="{% url 'all_events' %}">Events</a></li>
 <li class="breadcrumb-item active">{{ event.name }}</li>
 {% endblock %} {% block content %}
 

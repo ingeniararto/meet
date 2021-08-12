@@ -1,17 +1,27 @@
 {% extends 'base.html' %} {% load static %}{% block breadcrumb %}
-<li class="breadcrumb-item"><a href="{% url 'home' %}">Events</a></li>
+<li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
 <li class="breadcrumb-item active">Categories</li>
 {% endblock %}{% block content %} {% block stylesheet %}
-<link rel="stylesheet" href="{% static 'css/categories.css' %}"> {% endblock %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}"> {% endblock %}
 
 <body>
     {% for category in categories %}
-    <div class="card mb-3">
-        <img src="https://mdbootstrap.com/img/new/slides/041.jpg" alt="Avatar" style="width:100%">
-        <div class="container">
-            <h4><b> {{category.name}}</b></h4>
-        </div>
-    </div>
+    <li>
+        <a href="{% url 'category' category.id %}" class="card">
+            <img src="https://mdbootstrap.com/img/new/slides/041.jpg" class="card__image" alt="" />
+            <div class="card__overlay">
+                <div class="card__header">
+                    <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>
+                    <div class="card__header-text">
+                        <h3 class="card__title">{{category.name }}</h3>
+                        <span class="card__status"> {{number_of_events_of_one_category}} </span>
+                    </div>
+                </div>
+                <p class="card__description"> </p>
+            </div>
+        </a>
+    </li>
+
     {% endfor %}
 </body>
 {% endblock %}

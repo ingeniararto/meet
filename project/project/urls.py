@@ -23,22 +23,23 @@ from categories import views as cat_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path(r'^$', views.home, name='home'),
+    re_path(r'^$', views.Home.as_view(), name='home'),
+    re_path(r'^all_events/$', views.AllEvents.as_view(), name='all_events'),
     
-    re_path(r'^event/(?P<pk>\d+)/$', views.event, name='event'),
-    re_path(r'^new_event/$', views.new_event, name='new_event'),
-    re_path(r'^event/(?P<pk>\d+)/new_reply/$', views.new_reply, name='new_reply'),
+    re_path(r'^event/(?P<pk>\d+)/$', views.OneEvent.as_view(), name='event'),
+    re_path(r'^new_event/$', views.NewEvent.as_view(), name='new_event'),
+    re_path(r'^event/(?P<pk>\d+)/new_reply/$', views.NewReply.as_view(), name='new_reply'),
     
 
-    re_path(r'^signup/$', accounts_views.signup, name='signup'),
-    re_path(r'^registry/$', accounts_views.registry, name='registry'),
+    re_path(r'^signup/$', accounts_views.SignUp.as_view(), name='signup'),
+    re_path(r'^registry/$', accounts_views.Registry.as_view(), name='registry'),
     re_path(r'^login/$', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     re_path(r'^logout/$', auth_views.LogoutView.as_view(), name='logout'),
-    re_path(r'^account/(?P<id>\d+)/$', accounts_views.account, name='account'),
+    re_path(r'^account/(?P<id>\d+)/$', accounts_views.Account.as_view(), name='account'),
 
 
-    re_path(r'^categories/$', cat_views.categories, name='categories'),
-    re_path(r'^category/(?P<id>\d+)/$', cat_views.category, name='category'),
+    re_path(r'^categories/$', cat_views.Categories.as_view(), name='categories'),
+    re_path(r'^category/(?P<id>\d+)/$', cat_views.OneCategory.as_view(), name='category'),
 
 # password change
     re_path(r'^settings/password/$', auth_views.PasswordChangeView.as_view(template_name='password_change.html'), name='password_change'),
