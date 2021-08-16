@@ -16,7 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path
 from accounts import views as accounts_views
-import categories
 from events import views
 from django.contrib.auth import views as auth_views
 from categories import views as cat_views
@@ -29,6 +28,7 @@ urlpatterns = [
     re_path(r'^event/(?P<pk>\d+)/$', views.OneEvent.as_view(), name='event'),
     re_path(r'^new_event/$', views.NewEvent.as_view(), name='new_event'),
     re_path(r'^event/(?P<pk>\d+)/new_reply/$', views.NewReply.as_view(), name='new_reply'),
+    re_path(r'^event/(?P<pk>\d+)/appreciation/$', views.Appreciation.as_view(), name='appreciation'),
     
 
     re_path(r'^signup/$', accounts_views.SignUp.as_view(), name='signup'),
@@ -44,5 +44,7 @@ urlpatterns = [
 # password change
     re_path(r'^settings/password/$', auth_views.PasswordChangeView.as_view(template_name='password_change.html'), name='password_change'),
     re_path(r'^settings/password/done/$', auth_views.PasswordChangeDoneView.as_view(template_name='password_change_done.html'), name='password_change_done'),
-    
+
+
+
 ]

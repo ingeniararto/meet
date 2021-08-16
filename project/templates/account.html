@@ -160,12 +160,23 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="row gutters-sm">
                         <div class="col-sm-6 mb-3">
                             <div class="card h-100">
                                 <div class="card-body">
                                     <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">events</i>Attended Events</h6>
                                     <small>Event 4 <p class="text-muted font-size-sm">category</p></small>
                                     <small>Event 5 <p class="text-muted font-size-sm">category</p></small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">events</i>Liked Events</h6>
+                                    {% for event in liked_events %}
+                                    <small>{{event.name}} <p class="text-muted font-size-sm">{{event.category}}</p></small> {% endfor %}
                                 </div>
                             </div>
                         </div>

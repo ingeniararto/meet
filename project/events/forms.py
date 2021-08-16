@@ -1,6 +1,8 @@
+from django.db.models import fields
+from accounts.models import LikedEvent
 from categories.models import Category
 from django import forms
-from .models import Event, Reply
+from .models import Event, Reply, Attendee
 
 class NewEventForm(forms.ModelForm):
     name = forms.CharField(
@@ -33,14 +35,13 @@ class NewEventForm(forms.ModelForm):
         ),
         help_text = 'In terms of TL.'
     )
-    category = forms.ChoiceField(
+    category_name = forms.ChoiceField(
         required = False,
         choices = Category.CATEGORY_CHOICES
     )
-
     class Meta:
         model = Event
-        fields = ['name', 'description', 'date', 'payment_type','payment','category']
+        fields = ['name', 'description', 'date', 'payment_type','payment', 'category_name']
 
 class ReplyForm(forms.ModelForm):
     message = forms.CharField(
@@ -53,3 +54,17 @@ class ReplyForm(forms.ModelForm):
     class Meta:
         model = Reply
         fields = ['message', ]
+
+
+class AppreciationForm(forms.ModelForm):
+    appreciation_level = forms.ChoiceField(
+        required = False,
+        choices = Attendee.APPRECIATION_CHOICES
+    )
+
+    class Meta:
+        model = Attendee
+        fields = ['appreciation_level', ]
+
+
+        
