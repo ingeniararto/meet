@@ -5,7 +5,7 @@ from events.models import Event
 # Create your models here.
 
 class Profile(models.Model):
-    user = models.ForeignKey(User ,on_delete=models.CASCADE ,null=True, related_name='profile' )
+    user = models.OneToOneField(User ,on_delete=models.CASCADE ,null=True, related_name='profile' )
     name = models.CharField(max_length=22, default="-")
     surname = models.CharField(max_length=22, default="-")
     age = models.IntegerField()
@@ -19,6 +19,10 @@ class Profile(models.Model):
     )
     gender = models.CharField(max_length=22 ,choices=GENDER_CHOICES ,default=UNSPECIFIED)
     phone_number = models.CharField(default="-",max_length = 13)
+    website = models.CharField(default="-",max_length = 100)
+    twitter = models.CharField(default="-",max_length = 50)
+    instagram = models.CharField(default="-",max_length = 50)
+    facebook = models.CharField(default="-",max_length = 50)
 
 
 

@@ -41,6 +41,10 @@ class RegisterForm(forms.ModelForm):
         choices = Profile.GENDER_CHOICES
     )
     phone_number = forms.IntegerField()
+    website = forms.CharField()
+    twitter = forms.CharField()
+    instagram = forms.CharField()
+    facebook = forms.CharField()
     class Meta:
         model = Profile
-        fields = [ 'name', 'surname', 'age', 'gender', 'phone_number' ]
+        fields = [ 'name', 'surname', 'age', 'gender', 'phone_number', 'website', 'twitter', 'instagram', 'facebook' ]

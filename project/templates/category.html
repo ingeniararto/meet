@@ -14,7 +14,7 @@
             <th scope="col">Creater</th>
             <th scope="col">Replies</th>
             <th scope="col">Attendees</th>
-            <th scope="col">Date</th>
+            <th scope="col">Date/Place</th>
             <th scope="col">Payment</th>
         </tr>
     </thead>
@@ -26,10 +26,10 @@
                 <small class="text-muted d-block">{{ event.description }}</small>
                 <small class="text-info d-block"> <a href="{% url 'category' event.category.id %}">{{ event.category.name }}</a> </small>
             </td>
-            <td> Created by {{ event.created_by.username }} </td>
+            <td> Created by <a href="{% url 'account' event.created_by.id %}">{{ event.created_by.username }}</a> </td>
             <td> {{ event.get_replies_count }} </td>
-            <td>0</td>
-            <td> {{ event.date }} </td>
+            <td> {{ event.get_attendees_count }} </td>
+            <td> {{ event.date }} / {{ event.place }} </td>
             <td> {% if event.payment_type == 'Not free' %} {{event.payment}} TL {% else %} {{ event.payment_type }} {% endif %}</td>
         </tr>
         {% endfor %}

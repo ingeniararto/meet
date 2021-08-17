@@ -8,13 +8,13 @@
     {% for category in categories %}
     <li>
         <a href="{% url 'category' category.id %}" class="card">
-            <img src="https://mdbootstrap.com/img/new/slides/041.jpg" class="card__image" alt="" />
+            <img src='{{category.photo}}' class="card__image" alt="" />
             <div class="card__overlay">
                 <div class="card__header">
                     <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>
                     <div class="card__header-text">
                         <h3 class="card__title">{{category.name }}</h3>
-                        <span class="card__status"> {{number_of_events_of_one_category}} </span>
+                        <span class="card__status"> {{category.get_number_of_events}} </span>
                     </div>
                 </div>
                 <p class="card__description"> </p>
@@ -23,5 +23,6 @@
     </li>
 
     {% endfor %}
+
 </body>
 {% endblock %}

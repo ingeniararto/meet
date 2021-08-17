@@ -23,6 +23,13 @@ class NewEventForm(forms.ModelForm):
         ), 
         help_text = 'format: yyyy-mm-dd hh:mm:ss'
     )
+    place = forms.CharField(
+        widget = forms.Textarea(
+            attrs = {'rows': 5, 'placeholder': 'Place'}
+        ),        
+        max_length = 4000,
+        help_text = 'The max length of the text is 4000.'
+    )
     payment_type = forms.CharField(
         widget = forms.Textarea(
             attrs = {'rows': 1, 'placeholder': 'Please indicate the payment type'}
@@ -39,9 +46,12 @@ class NewEventForm(forms.ModelForm):
         required = False,
         choices = Category.CATEGORY_CHOICES
     )
+    is_online = forms.BooleanField(
+        required = True
+    )
     class Meta:
         model = Event
-        fields = ['name', 'description', 'date', 'payment_type','payment', 'category_name']
+        fields = ['name', 'description', 'date', 'place', 'payment_type','payment', 'category_name', 'is_online']
 
 class ReplyForm(forms.ModelForm):
     message = forms.CharField(

@@ -14,14 +14,15 @@ class Event(models.Model):
         (GO_DUTCH, "Go Dutch"),
     )
 
-    name = models.CharField(max_length=30, unique=True)
-    description = models.CharField(max_length=100)
+    name = models.CharField(max_length=70, unique=True)
+    description = models.CharField(max_length=150)
     is_online = models.BooleanField(default=False)
     payment = models.FloatField(default=0)
     payment_type = models.CharField(max_length=8 ,choices=PAYMENT_CHOICES ,default=FREE)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE ,null=True ,related_name="events")
     created_at = models.DateTimeField(auto_now_add=True,null=True)
     date = models.DateTimeField(null=True)
+    place = models.CharField(max_length=150, default='Not specified')
     category_name = models.CharField(max_length=7 ,choices=Category.CATEGORY_CHOICES ,default=Category.ELSE)
     category = models.ForeignKey(Category, on_delete=CASCADE, null=True, related_name="events_of_cat")
 
@@ -30,6 +31,16 @@ class Event(models.Model):
 
     def get_likes_count(self):
         return self.likes.count()
+
+    def get_is_online(self):
+        if(self.is_online):
+            return 'Online'
+        else:
+            #return place
+            return 'Face-to-face'
+    
+    def get_attendees_count(self):
+        return self.attendees.count()
 
 
 class Reply(models.Model):
@@ -43,8 +54,8 @@ class Reply(models.Model):
 
 class Attendee(models.Model):
     event = models.ForeignKey(Event,on_delete=models.CASCADE , related_name='attendees')
-    att_id = models.IntegerField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=CASCADE, null=True, related_name='attended_evets')
+    att_id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=CASCADE, null=True, related_name='attended_events')
     DEFAULT = "None"
     ONE = "1"
     TWO = "2"

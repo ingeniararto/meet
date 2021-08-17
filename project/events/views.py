@@ -26,13 +26,21 @@ class OneEvent(View):
         one_event = get_object_or_404(Event, pk=pk)
         return render(request, 'event.html', {'event': one_event})
     def post(self, request, pk):
-        one_event = get_object_or_404(Event, pk=pk)
         user = request.user
-        like = LikedEvent.objects.filter(event= one_event, liked_by=user) # in here we filtered the particular post with its id
-        if not like: 
-            like = LikedEvent.objects.create(liked_by=user, event=one_event)
-            like.save()
-        return redirect('event',pk=pk)
+        one_event = get_object_or_404(Event, pk=pk)
+        if 'Like' in request.POST:
+            like = LikedEvent.objects.filter(event= one_event, liked_by=user) 
+            if not like: 
+                like = LikedEvent.objects.create(liked_by=user, event=one_event)
+                like.save()
+            return redirect('event',pk=pk)
+        elif 'Attend' in request.POST:
+            attendee = Attendee.objects.filter(event= one_event, user=user) 
+            if not attendee: 
+                attendee = Attendee.objects.create(event= one_event, user=user)
+                attendee.save()
+            return redirect('event',pk=pk)
+
 
 class NewEvent(View):
     def get(self, request):
@@ -78,5 +86,13 @@ class Appreciation(View):
             return redirect('event', pk = pk)
         
 
+class Search(View):
+    def get(self,request):
+        search_item = self.request.GET.get('search')
+        if(search_item):
+            search_results = Event.objects.filter(name__contains = search_item)
+        else:
+            search_results=None
+        return render(request, 'search_results.html', {'search_results' : search_results })
 
 

@@ -5,8 +5,20 @@
 {% endblock %} {% block content %}
 
 <div class="card mb-4 border-dark">
+    <div class="row mb-2">
+        <div class="col-5">
+            Category : {{ event.category.name }}
+        </div>
+    </div>
     <div class="card-header text-dark bg-light py-5 px-3">
         <div class="row mb-4">
+            <div class="card mb-2 border-dark">
+                <div class="card-header text-dark bg-light py-2 px-5">
+                    <div class="row mb-2">
+                        Orginiser : <a href="{% url 'account' event.created_by.id %}">{{ event.created_by.username }}</a>
+                    </div>
+                </div>
+            </div>
             <div class="card mb-2 border-dark">
                 <div class="card-header text-dark bg-light py-2 px-5">
                     <div class="row mb-2">
@@ -17,13 +29,27 @@
             <div class="card mb-2 border-dark">
                 <div class="card-header text-dark bg-light py-2 px-5">
                     <div class="row mb-2">
-                        Payment : {{ event.payment_type }}
+                        Place : {{ event.place }}
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-2 border-dark">
+                <div class="card-header text-dark bg-light py-2 px-5">
+                    <div class="row mb-2">
+                        Payment : {% if event.payment_type == 'Not free' %} {{event.payment}} TL {% else %} {{ event.payment_type }} {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-2 border-dark">
+                <div class="card-header text-dark bg-light py-2 px-5">
+                    <div class="row mb-2">
+                        {{ event.get_is_online }}
                     </div>
                 </div>
             </div>
         </div>{{ event.description }}
         <div class="col-15 text-right">
-            <small class="text-muted">Created by {{ event.created_by.username }} at {{ event.created_at }}</small>
+            <small class="text-muted">Created at {{ event.created_at }}</small>
         </div>
     </div>
 
@@ -40,12 +66,17 @@
             <div class="col-20">
                 <form method="post" novalidate>
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-primary btn-block">Like</button>
+                    <button name='Like' type="submit" class="btn btn-primary btn-block">Like</button>
+                    <button name='Attend' type="submit" class="btn btn-primary btn-block">Attend</button>
                 </form>
             </div>
             <div class="card-body p-2">
                 <small class="text">{{ event.get_likes_count }}</small>
+                <br>
+                <br>
+                <small class="text">{{ event.get_attendees_count }}</small>
             </div>
+
         </div>
     </div>
 </div>
