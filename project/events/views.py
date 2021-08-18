@@ -1,9 +1,11 @@
+import datetime
 from accounts.models import LikedEvent
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Attendee, Event
+from .models import Attendee, Event, Reply
 from .forms import NewEventForm, ReplyForm, AppreciationForm
 from categories.models import Category
 from django.views import View
+from django.views.generic.edit import UpdateView
 
 
 # Create your views here.
@@ -55,6 +57,19 @@ class NewEvent(View):
             one_event.save()
             return  redirect('all_events')
 
+class EventUpdate(UpdateView):
+    model = Event
+    fields = ('name', 'description', 'date', 'place', 'payment_type','payment', 'category_name', 'is_online')
+    template_name = 'edit_event.html'
+    pk_url_kwarg = 'pk'
+    context_object_name = 'one_event'
+
+    def form_valid(self, form):
+        one_event = form.save(commit=False)
+        one_event.updated_at = datetime.datetime.now()
+        one_event.save()
+        return redirect('event', pk=one_event.pk)
+
 class NewReply(View):
     def get(self, request, pk):
         one_event = get_object_or_404(Event, pk=pk)
@@ -69,6 +84,19 @@ class NewReply(View):
             reply.created_by = request.user
             reply.save()
             return redirect('event', pk=pk)
+
+class ReplyUpdate(UpdateView):
+    model = Reply
+    fields = ('message', )
+    template_name = 'edit_reply.html'
+    pk_url_kwarg = 'id'
+    context_object_name = 'reply'
+
+    def form_valid(self, form):
+        reply = form.save(commit=False)
+        reply.updated_at = datetime.datetime.now()
+        reply.save()
+        return redirect('event', pk=reply.event.pk)
 
 
 class Appreciation(View):

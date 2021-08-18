@@ -51,6 +51,9 @@
         <div class="col-15 text-right">
             <small class="text-muted">Created at {{ event.created_at }}</small>
         </div>
+        <div class="col-15 text-right">
+            <small class="text-muted">Last update: {% if event.updated_at == null %} {{ event.created_at }} {% else %} {{ event.updated_at }} {% endif %}</small>
+        </div>
     </div>
 
     <div class="card-body p-3">
@@ -59,7 +62,7 @@
                 <div class="row mb-1">
                 </div>
                 {% if event.created_by == user %}
-                <a href="#" class="btn btn-info" role="button">Edit</a>{% endif %} {% if user.is_authenticated %}
+                <a href="{% url 'edit_event' event.pk %}" class="btn btn-info" role="button"> Edit </a>{% endif %} {% if user.is_authenticated %}
                 <a href="{% url 'new_reply' event.pk %}" class="btn btn-primary">New reply</a>
                 <a href="{% url 'appreciation' event.pk %}" class="btn btn-primary">Rate</a> {% endif %}
             </div>
@@ -89,10 +92,13 @@
                 <div class="col-15 text-right">
                     <small class="text-muted">Created by {{ reply.created_by.username }} at {{ reply.created_at }}</small>
                 </div>
+                <div class="col-15 text-right">
+                    <small class="text-muted"> Last update: {% if reply.updated_at == null %} {{ reply.created_at }} {% else %} {{ reply.updated_at }} {% endif %} </small>
+                </div>
             </div>
         </div>
         <div class="col-20"> {% if reply.created_by == user %}
-            <a href="#" class="btn btn-info" role="button">Edit</a>{% endif %}
+            <a href="{% url 'edit_reply' event.pk reply.id %}" class="btn btn-info" role="button">Edit</a>{% endif %}
         </div>
     </div>
 </div>

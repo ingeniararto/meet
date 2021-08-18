@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from .forms import SignUpForm, RegisterForm
 from .models import Profile
 from django.views import View
+from django.views.generic.edit import UpdateView
 import datetime
 
 # Create your views here.
@@ -39,4 +40,16 @@ class Account(View):
         upcoming_events = profile.user.events.filter(date__gt = datetime.date.today())
         past_events = profile.user.events.filter(date__lte = datetime.date.today())
         return render(request, 'account.html', {'profile': profile, 'liked_events': liked_events, 'attended_events': attended_events, 'upcoming_events': upcoming_events, 'past_events': past_events})
+
+class ProfileUpdate(UpdateView):
+    model = Profile
+    fields = ('name', 'surname', 'age', 'gender', 'phone_number', 'website', 'twitter', 'instagram', 'facebook' )
+    template_name = 'edit_profile.html'
+    pk_url_kwarg = 'id'
+    context_object_name = 'profile'
+
+    def form_valid(self, form):
+        profile = form.save(commit=False)
+        profile.save()
+        return redirect('account', id=profile.user.id)
 

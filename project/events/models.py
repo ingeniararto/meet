@@ -21,6 +21,7 @@ class Event(models.Model):
     payment_type = models.CharField(max_length=8 ,choices=PAYMENT_CHOICES ,default=FREE)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE ,null=True ,related_name="events")
     created_at = models.DateTimeField(auto_now_add=True,null=True)
+    updated_at = models.DateTimeField(null=True)
     date = models.DateTimeField(null=True)
     place = models.CharField(max_length=150, default='Not specified')
     category_name = models.CharField(max_length=7 ,choices=Category.CATEGORY_CHOICES ,default=Category.ELSE)
@@ -49,7 +50,6 @@ class Reply(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True)
     created_by = models.ForeignKey(User,on_delete=models.CASCADE ,null=True, related_name='replies')
-    updated_by = models.ForeignKey(User,on_delete=models.CASCADE ,null=True, related_name='+')
 
 
 class Attendee(models.Model):

@@ -67,4 +67,11 @@ urlpatterns = [
 
     re_path(r'^search_results/$', views.Search.as_view(), name='search_results'),
 
+#edit urls
+    re_path(r'^event/(?P<pk>\d+)/reply/(?P<id>\d+)/edit/$',
+        views.ReplyUpdate.as_view(), name='edit_reply'),
+    re_path(r'^event/(?P<pk>\d+)/edit/$',
+        views.EventUpdate.as_view(), name='edit_event'), 
+    re_path(r'^account/(?P<id>\d+)/edit/$',
+        accounts_views.ProfileUpdate.as_view(), name='edit_profile'), 
 ]
