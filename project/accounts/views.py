@@ -2,7 +2,7 @@ from django.contrib.auth import login as auth_login
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.models import User
 from .forms import SignUpForm, RegisterForm
-from .models import Profile
+from .models import Follower, Profile
 from django.views import View
 from django.views.generic.edit import UpdateView
 import datetime
@@ -40,6 +40,15 @@ class Account(View):
         upcoming_events = profile.user.events.filter(date__gt = datetime.date.today())
         past_events = profile.user.events.filter(date__lte = datetime.date.today())
         return render(request, 'account.html', {'profile': profile, 'liked_events': liked_events, 'attended_events': attended_events, 'upcoming_events': upcoming_events, 'past_events': past_events})
+    def post(self, request, id):
+        profile = get_object_or_404(Profile, user=get_object_or_404(User, id=id))
+        if 'follow' in request.POST:
+            follower = Follower.objects.filter(follower= request.user.profile, followed_profile = profile) 
+            if not follower: 
+                follower = Follower.objects.create(follower= request.user.profile, followed_profile = profile)
+                follower.save()
+            return redirect('account',id=id)
+
 
 class ProfileUpdate(UpdateView):
     model = Profile
@@ -52,4 +61,11 @@ class ProfileUpdate(UpdateView):
         profile = form.save(commit=False)
         profile.save()
         return redirect('account', id=profile.user.id)
+
+
+class FollowersView(View):
+    def get(self,request,id):
+        profile = get_object_or_404(Profile, user=get_object_or_404(User, id=id))
+        followers = profile.followers.all()
+        return render(request, 'followers.html', {'profile': profile, 'followers': followers })
 

@@ -1,5 +1,7 @@
 {% extends 'base.html' %} {% block title %} {{ event.name }} - {{ block.super }} {% endblock %} {% block breadcrumb %}
 <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+{% if flag %}
+<li class="breadcrumb-item"><a href="{% url 'categories' %}">Categories</a></li> {% endif %}
 <li class="breadcrumb-item"><a href="{% url 'all_events' %}">Events</a></li>
 <li class="breadcrumb-item active">{{ event.name }}</li>
 {% endblock %} {% block content %}
@@ -15,7 +17,7 @@
             <div class="card mb-2 border-dark">
                 <div class="card-header text-dark bg-light py-2 px-5">
                     <div class="row mb-2">
-                        Orginiser : <a href="{% url 'account' event.created_by.id %}">{{ event.created_by.username }}</a>
+                        Orginiser: <a href="{% url 'account' event.created_by.id %}">  {{ event.created_by.username }}</a>
                     </div>
                 </div>
             </div>
@@ -64,20 +66,21 @@
                 {% if event.created_by == user %}
                 <a href="{% url 'edit_event' event.pk %}" class="btn btn-info" role="button"> Edit </a>{% endif %} {% if user.is_authenticated %}
                 <a href="{% url 'new_reply' event.pk %}" class="btn btn-primary">New reply</a>
-                <a href="{% url 'appreciation' event.pk %}" class="btn btn-primary">Rate</a> {% endif %}
+                <a href="#" class="btn btn-primary">Rate</a> {% endif %}
             </div>
             <div class="col-20">
+                {% if user.is_authenticated %}
                 <form method="post" novalidate>
                     {% csrf_token %}
                     <button name='Like' type="submit" class="btn btn-primary btn-block">Like</button>
                     <button name='Attend' type="submit" class="btn btn-primary btn-block">Attend</button>
-                </form>
+                </form> {% endif %}
             </div>
             <div class="card-body p-2">
-                <small class="text">{{ event.get_likes_count }}</small>
+                <small class="text">Like: {{ event.get_likes_count }}</small>
                 <br>
                 <br>
-                <small class="text">{{ event.get_attendees_count }}</small>
+                <small class="text">Attendees: {{ event.get_attendees_count }}</small>
             </div>
 
         </div>

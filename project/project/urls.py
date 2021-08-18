@@ -29,7 +29,6 @@ urlpatterns = [
     re_path(r'^event/(?P<pk>\d+)/$', views.OneEvent.as_view(), name='event'),
     re_path(r'^new_event/$', views.NewEvent.as_view(), name='new_event'),
     re_path(r'^event/(?P<pk>\d+)/new_reply/$', views.NewReply.as_view(), name='new_reply'),
-    re_path(r'^event/(?P<pk>\d+)/appreciation/$', views.Appreciation.as_view(), name='appreciation'),
     
 
     re_path(r'^signup/$', accounts_views.SignUp.as_view(), name='signup'),
@@ -43,29 +42,28 @@ urlpatterns = [
     re_path(r'^category/(?P<id>\d+)/$', cat_views.OneCategory.as_view(), name='category'),
 
 # password change
-    re_path(r'^settings/password/$', auth_views.PasswordChangeView.as_view(template_name='password_change.html'), name='password_change'),
-    re_path(r'^settings/password/done/$', auth_views.PasswordChangeDoneView.as_view(template_name='password_change_done.html'), name='password_change_done'),
+    re_path(r'^password_change/$', auth_views.PasswordChangeView.as_view(template_name='password_change.html'), name='password_change'),
+    re_path(r'^password_change/done/$', auth_views.PasswordChangeDoneView.as_view(template_name='password_change_done.html'), name='password_change_done'),
 
 #password reset
     path('', include('django.contrib.auth.urls')),#important
-    re_path(r'^reset/$',
+    path('reset/',
         auth_views.PasswordResetView.as_view(
             template_name='password_reset.html',
             email_template_name='password_reset_email.html',
             subject_template_name='password_reset_subject.txt'
         ),
         name='password_reset'),
-    re_path(r'^reset/done/$',
+    path('password_reset_done/',
         auth_views.PasswordResetDoneView.as_view(template_name='password_reset_done.html'),
         name='password_reset_done'),
-    re_path(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+    path('reset/<uidb64>/<token>',
         auth_views.PasswordResetConfirmView.as_view(template_name='password_reset_confirm.html'),
         name='password_reset_confirm'),
-    re_path(r'^reset/complete/$',
+    path('password_reset_complete/',
         auth_views.PasswordResetCompleteView.as_view(template_name='password_reset_complete.html'),
         name='password_reset_complete'),
 
-    re_path(r'^search_results/$', views.Search.as_view(), name='search_results'),
 
 #edit urls
     re_path(r'^event/(?P<pk>\d+)/reply/(?P<id>\d+)/edit/$',
@@ -74,4 +72,7 @@ urlpatterns = [
         views.EventUpdate.as_view(), name='edit_event'), 
     re_path(r'^account/(?P<id>\d+)/edit/$',
         accounts_views.ProfileUpdate.as_view(), name='edit_profile'), 
+
+    re_path(r'^account/(?P<id>\d+)/followers/$', accounts_views.FollowersView.as_view(), name='followers'),
+
 ]

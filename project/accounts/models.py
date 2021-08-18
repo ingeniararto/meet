@@ -24,8 +24,16 @@ class Profile(models.Model):
     instagram = models.CharField(default="-",max_length = 50)
     facebook = models.CharField(default="-",max_length = 50)
 
+    def get_num_of_followers(self):
+        return self.followers.all().count()
+
 
 
 class LikedEvent(models.Model):
     event = models.ForeignKey(Event, on_delete= models.CASCADE, null=True, related_name='likes')
     liked_by = models.ForeignKey(User, on_delete=CASCADE, null=True, related_name='liked_events')
+
+
+class Follower(models.Model):
+    follower = models.ForeignKey(Profile, on_delete=CASCADE, null=True, related_name= 'followed_profiles')
+    followed_profile = models.ForeignKey(Profile, on_delete=CASCADE, null=True, related_name='followers')

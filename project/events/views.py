@@ -26,7 +26,7 @@ class AllEvents(View):
 class OneEvent(View):
     def get(self, request, pk):
         one_event = get_object_or_404(Event, pk=pk)
-        return render(request, 'event.html', {'event': one_event})
+        return render(request, 'event.html', {'event': one_event, 'flag': False})
     def post(self, request, pk):
         user = request.user
         one_event = get_object_or_404(Event, pk=pk)
@@ -99,28 +99,8 @@ class ReplyUpdate(UpdateView):
         return redirect('event', pk=reply.event.pk)
 
 
-class Appreciation(View):
-    def get(self, request, pk):
-        event = get_object_or_404(Event, pk=pk)
-        form =AppreciationForm()
-        return render(request, 'appreciation.html', {'event': event, 'form': form})
-    def post(self, request, pk):
-        attendee = get_object_or_404(Attendee, user = request.user)
-        form = AppreciationForm(request.POST)
-        if form.is_valid():
-            level = form.save(commit=False)
-            attendee.appreciation_level = level
-            attendee.save()
-            return redirect('event', pk = pk)
         
 
-class Search(View):
-    def get(self,request):
-        search_item = self.request.GET.get('search')
-        if(search_item):
-            search_results = Event.objects.filter(name__contains = search_item)
-        else:
-            search_results=None
-        return render(request, 'search_results.html', {'search_results' : search_results })
+
 
 
