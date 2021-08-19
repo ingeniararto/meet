@@ -39,20 +39,24 @@ class Account(View):
         attended_events = profile.user.attended_events.all()
         upcoming_events = profile.user.events.filter(date__gt = datetime.date.today())
         past_events = profile.user.events.filter(date__lte = datetime.date.today())
-        return render(request, 'account.html', {'profile': profile, 'liked_events': liked_events, 'attended_events': attended_events, 'upcoming_events': upcoming_events, 'past_events': past_events})
+        return render(request, 'account.html', {'profile': profile, 'liked_events': liked_events, 
+            'attended_events': attended_events, 'upcoming_events': upcoming_events, 'past_events': past_events})
     def post(self, request, id):
         profile = get_object_or_404(Profile, user=get_object_or_404(User, id=id))
         if 'follow' in request.POST:
-            follower = Follower.objects.filter(follower= request.user.profile, followed_profile = profile) 
+            follower = Follower.objects.filter(follower = request.user.profile, followed_profile = profile) 
             if not follower: 
-                follower = Follower.objects.create(follower= request.user.profile, followed_profile = profile)
+                follower = Follower.objects.create(follower = request.user.profile, followed_profile = profile)
                 follower.save()
+            else: 
+                follower.delete()
             return redirect('account',id=id)
 
 
 class ProfileUpdate(UpdateView):
     model = Profile
-    fields = ('name', 'surname', 'age', 'gender', 'phone_number', 'website', 'twitter', 'instagram', 'facebook' )
+    fields = ('name', 'surname', 'age', 'gender', 'phone_number', 'website', 
+        'twitter', 'instagram', 'facebook' )
     template_name = 'edit_profile.html'
     pk_url_kwarg = 'id'
     context_object_name = 'profile'
@@ -67,5 +71,6 @@ class FollowersView(View):
     def get(self,request,id):
         profile = get_object_or_404(Profile, user=get_object_or_404(User, id=id))
         followers = profile.followers.all()
-        return render(request, 'followers.html', {'profile': profile, 'followers': followers })
+        return render(request, 'followers.html', {'profile': profile, 
+            'followers': followers })
 

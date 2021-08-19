@@ -47,4 +47,5 @@ class RegisterForm(forms.ModelForm):
     facebook = forms.CharField()
     class Meta:
         model = Profile
-        fields = [ 'name', 'surname', 'age', 'gender', 'phone_number', 'website', 'twitter', 'instagram', 'facebook' ]
+        fields = [ 'name', 'surname', 'age', 'gender', 'phone_number', 
+            'website', 'twitter', 'instagram', 'facebook' ]

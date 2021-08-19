@@ -54,7 +54,8 @@
             <small class="text-muted">Created at {{ event.created_at }}</small>
         </div>
         <div class="col-15 text-right">
-            <small class="text-muted">Last update: {% if event.updated_at == null %} {{ event.created_at }} {% else %} {{ event.updated_at }} {% endif %}</small>
+            <small class="text-muted">Last update: {% if event.updated_at == null %} {{ event.created_at }} 
+                {% else %} {{ event.updated_at }} {% endif %}</small>
         </div>
     </div>
 
@@ -72,7 +73,7 @@
                 {% if user.is_authenticated %}
                 <form method="post" novalidate>
                     {% csrf_token %}
-                    <button name='Like' type="submit" class="btn btn-primary btn-block">Like</button>
+                    <button name='Like' type="submit" class="btn btn-primary btn-block">Like <i class="fas fa-thumbs-up fa-1x"></i> </i> </button>
                     <button name='Attend' type="submit" class="btn btn-primary btn-block">Attend</button>
                 </form> {% endif %}
             </div>
@@ -96,7 +97,8 @@
                     <small class="text-muted">Created by {{ reply.created_by.username }} at {{ reply.created_at }}</small>
                 </div>
                 <div class="col-15 text-right">
-                    <small class="text-muted"> Last update: {% if reply.updated_at == null %} {{ reply.created_at }} {% else %} {{ reply.updated_at }} {% endif %} </small>
+                    <small class="text-muted"> Last update: {% if reply.updated_at == null %} {{ reply.created_at }} 
+                        {% else %} {{ reply.updated_at }} {% endif %} </small>
                 </div>
             </div>
         </div>

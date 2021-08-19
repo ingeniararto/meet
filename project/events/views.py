@@ -2,7 +2,7 @@ import datetime
 from accounts.models import LikedEvent
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Attendee, Event, Reply
-from .forms import NewEventForm, ReplyForm, AppreciationForm
+from .forms import NewEventForm, ReplyForm
 from categories.models import Category
 from django.views import View
 from django.views.generic.edit import UpdateView
@@ -14,7 +14,8 @@ class Home(View):
         events = Event.objects.all()
         categories = Category.objects.all()
         number_of_events = Event.objects.all().count
-        return render(request, 'home.html', {'events': events, 'categories': categories, 'number_of_events': number_of_events })
+        return render(request, 'home.html', {'events': events, 'categories': categories, 
+            'number_of_events': number_of_events })
 
 class AllEvents(View):
     def get(self,request):
@@ -35,20 +36,24 @@ class OneEvent(View):
             if not like: 
                 like = LikedEvent.objects.create(liked_by=user, event=one_event)
                 like.save()
-            return redirect('event',pk=pk)
+            else:
+                like.delete()
+            return redirect('event', pk=pk)
         elif 'Attend' in request.POST:
-            attendee = Attendee.objects.filter(event= one_event, user=user) 
+            attendee = Attendee.objects.filter(event=one_event, user=user) 
             if not attendee: 
                 attendee = Attendee.objects.create(event= one_event, user=user)
                 attendee.save()
-            return redirect('event',pk=pk)
+            else:
+                attendee.delete()
+            return redirect('event', pk=pk)
 
 
 class NewEvent(View):
     def get(self, request):
         form = NewEventForm()
         return render(request, 'new_event.html', {'form': form})
-    def post(self,request):
+    def post(self, request):
         form = NewEventForm(request.POST)
         if form.is_valid():
             one_event = form.save(commit=False)
@@ -59,7 +64,8 @@ class NewEvent(View):
 
 class EventUpdate(UpdateView):
     model = Event
-    fields = ('name', 'description', 'date', 'place', 'payment_type','payment', 'category_name', 'is_online')
+    fields = ('name', 'description', 'date', 'place', 'payment_type',
+        'payment', 'category_name', 'is_online')
     template_name = 'edit_event.html'
     pk_url_kwarg = 'pk'
     context_object_name = 'one_event'
@@ -74,7 +80,8 @@ class NewReply(View):
     def get(self, request, pk):
         one_event = get_object_or_404(Event, pk=pk)
         form = ReplyForm()
-        return render(request, 'new_reply.html', {'event': one_event, 'form': form})
+        return render(request, 'new_reply.html', {'event': one_event, 
+            'form': form})
     def post(self, request, pk):
         one_event = get_object_or_404(Event, pk=pk)
         form = ReplyForm(request.POST)
@@ -87,7 +94,7 @@ class NewReply(View):
 
 class ReplyUpdate(UpdateView):
     model = Reply
-    fields = ('message', )
+    fields = ('message',)
     template_name = 'edit_reply.html'
     pk_url_kwarg = 'id'
     context_object_name = 'reply'

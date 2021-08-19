@@ -42,8 +42,12 @@ urlpatterns = [
     re_path(r'^category/(?P<id>\d+)/$', cat_views.OneCategory.as_view(), name='category'),
 
 # password change
-    re_path(r'^password_change/$', auth_views.PasswordChangeView.as_view(template_name='password_change.html'), name='password_change'),
-    re_path(r'^password_change/done/$', auth_views.PasswordChangeDoneView.as_view(template_name='password_change_done.html'), name='password_change_done'),
+    re_path(r'^password_change/$', 
+        auth_views.PasswordChangeView.as_view(template_name='password_change.html'), 
+        name='password_change'),
+    re_path(r'^password_change/done/$', 
+        auth_views.PasswordChangeDoneView.as_view(template_name='password_change_done.html'), 
+        name='password_change_done'),
 
 #password reset
     path('', include('django.contrib.auth.urls')),#important
@@ -73,6 +77,7 @@ urlpatterns = [
     re_path(r'^account/(?P<id>\d+)/edit/$',
         accounts_views.ProfileUpdate.as_view(), name='edit_profile'), 
 
-    re_path(r'^account/(?P<id>\d+)/followers/$', accounts_views.FollowersView.as_view(), name='followers'),
+    re_path(r'^account/(?P<id>\d+)/followers/$', 
+        accounts_views.FollowersView.as_view(), name='followers'),
 
 ]

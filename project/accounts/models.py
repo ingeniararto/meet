@@ -5,7 +5,8 @@ from events.models import Event
 # Create your models here.
 
 class Profile(models.Model):
-    user = models.OneToOneField(User ,on_delete=models.CASCADE ,null=True, related_name='profile' )
+    user = models.OneToOneField(User, on_delete=models.CASCADE,
+        null=True, related_name='profile' )
     name = models.CharField(max_length=22, default="-")
     surname = models.CharField(max_length=22, default="-")
     age = models.IntegerField()
@@ -17,23 +18,30 @@ class Profile(models.Model):
         (MALE, "Male"),
         (FEMALE, "Female"),
     )
-    gender = models.CharField(max_length=22 ,choices=GENDER_CHOICES ,default=UNSPECIFIED)
-    phone_number = models.CharField(default="-",max_length = 13)
-    website = models.CharField(default="-",max_length = 100)
-    twitter = models.CharField(default="-",max_length = 50)
-    instagram = models.CharField(default="-",max_length = 50)
-    facebook = models.CharField(default="-",max_length = 50)
+    gender = models.CharField(max_length=22, choices=GENDER_CHOICES,
+        default=UNSPECIFIED)
+    phone_number = models.CharField(default="-", max_length = 13)
+    website = models.CharField(default="-", max_length = 100)
+    twitter = models.CharField(default="-", max_length = 50)
+    instagram = models.CharField(default="-", max_length = 50)
+    facebook = models.CharField(default="-", max_length = 50)
 
     def get_num_of_followers(self):
         return self.followers.all().count()
 
+    
+
 
 
 class LikedEvent(models.Model):
-    event = models.ForeignKey(Event, on_delete= models.CASCADE, null=True, related_name='likes')
-    liked_by = models.ForeignKey(User, on_delete=CASCADE, null=True, related_name='liked_events')
+    event = models.ForeignKey(Event, on_delete= models.CASCADE, 
+        null=True, related_name='likes')
+    liked_by = models.ForeignKey(User, on_delete=CASCADE, 
+        null=True, related_name='liked_events')
 
 
 class Follower(models.Model):
-    follower = models.ForeignKey(Profile, on_delete=CASCADE, null=True, related_name= 'followed_profiles')
-    followed_profile = models.ForeignKey(Profile, on_delete=CASCADE, null=True, related_name='followers')
+    follower = models.ForeignKey(Profile, on_delete=CASCADE, 
+        null=True, related_name= 'followed_profiles')
+    followed_profile = models.ForeignKey(Profile, on_delete=CASCADE, 
+        null=True, related_name='followers')

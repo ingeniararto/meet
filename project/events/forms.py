@@ -32,13 +32,15 @@ class NewEventForm(forms.ModelForm):
     )
     payment_type = forms.CharField(
         widget = forms.Textarea(
-            attrs = {'rows': 1, 'placeholder': 'Please indicate the payment type'}
+            attrs = {'rows': 1, 
+                'placeholder': 'Please indicate the payment type'}
         ),
         help_text = 'Free/Not free/Go Dutch'
     )
     payment = forms.FloatField(
         widget = forms.NumberInput(
-            attrs = {'rows': 1, 'placeholder': 'Fill this area if the payment type is \'Not free\' '}
+            attrs = {'rows': 1, 
+                'placeholder': 'Fill this area if the payment type is \'Not free\' '}
         ),
         help_text = 'In terms of TL.'
     )
@@ -51,7 +53,8 @@ class NewEventForm(forms.ModelForm):
     )
     class Meta:
         model = Event
-        fields = ['name', 'description', 'date', 'place', 'payment_type','payment', 'category_name', 'is_online']
+        fields = ['name', 'description', 'date', 'place', 
+            'payment_type','payment', 'category_name', 'is_online']
 
 class ReplyForm(forms.ModelForm):
     message = forms.CharField(
