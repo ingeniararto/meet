@@ -25,6 +25,7 @@ class Profile(models.Model):
     twitter = models.CharField(default="-", max_length = 50)
     instagram = models.CharField(default="-", max_length = 50)
     facebook = models.CharField(default="-", max_length = 50)
+    profile_picture = models.ImageField(upload_to = 'static/uploads/', default = None)
 
     def get_num_of_followers(self):
         return self.followers.all().count()

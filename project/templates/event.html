@@ -7,6 +7,7 @@
 {% endblock %} {% block content %}
 
 <div class="card mb-4 border-dark">
+
     <div class="row mb-2">
         <div class="col-5">
             Category : {{ event.category.name }}
@@ -27,18 +28,25 @@
                         Date : {{ event.date }}
                     </div>
                 </div>
-            </div>
+            </div> {% if not event.is_online %}
             <div class="card mb-2 border-dark">
                 <div class="card-header text-dark bg-light py-2 px-5">
                     <div class="row mb-2">
                         Place : {{ event.place }}
                     </div>
                 </div>
-            </div>
+            </div> {% endif %}
             <div class="card mb-2 border-dark">
                 <div class="card-header text-dark bg-light py-2 px-5">
                     <div class="row mb-2">
                         Payment : {% if event.payment_type == 'Not free' %} {{event.payment}} TL {% else %} {{ event.payment_type }} {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-2 border-dark">
+                <div class="card-header text-dark bg-light py-2 px-5">
+                    <div class="row mb-2">
+                        Quota: {{ event.get_attendees_count }} / {{ event.max_num_of_attendees }}
                     </div>
                 </div>
             </div>
@@ -65,15 +73,21 @@
                 <div class="row mb-1">
                 </div>
                 {% if event.created_by == user %}
-                <a href="{% url 'edit_event' event.pk %}" class="btn btn-info" role="button"> Edit </a>{% endif %} {% if user.is_authenticated %}
+                <a href="{% url 'edit_event' event.pk %}" class="btn btn-info" role="button"> Edit </a> {% endif %} {% if user.is_authenticated %}
                 <a href="{% url 'new_reply' event.pk %}" class="btn btn-primary">New reply</a>
                 <a href="#" class="btn btn-primary">Rate</a> {% endif %}
-            </div>
-            <div class="col-20">
-                {% if user.is_authenticated %}
+                <br>
+                <br>{% if event.created_by == user %}
                 <form method="post" novalidate>
                     {% csrf_token %}
-                    <button name='Like' type="submit" class="btn btn-primary btn-block">Like <i class="fas fa-thumbs-up fa-1x"></i> </i> </button>
+                    <button name='Delete' type="submit" class="btn btn-primary">Delete  </button> {% endif %}
+                </form>
+            </div>
+            <div class="col-20">
+                {% if user.is_authenticated and not event.created_by == user %}
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    <button name='Like' type="submit" class="btn btn-primary btn-block">Like <i class="fas fa-thumbs-up fa-beat fa-1x "></i> </button>
                     <button name='Attend' type="submit" class="btn btn-primary btn-block">Attend</button>
                 </form> {% endif %}
             </div>
@@ -109,4 +123,5 @@
 </div>
 {% endfor %}
 </div>
+
 {% endblock %}

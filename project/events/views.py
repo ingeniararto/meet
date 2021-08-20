@@ -6,6 +6,7 @@ from .forms import NewEventForm, ReplyForm
 from categories.models import Category
 from django.views import View
 from django.views.generic.edit import UpdateView
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -41,13 +42,16 @@ class OneEvent(View):
             return redirect('event', pk=pk)
         elif 'Attend' in request.POST:
             attendee = Attendee.objects.filter(event=one_event, user=user) 
-            if not attendee: 
-                attendee = Attendee.objects.create(event= one_event, user=user)
-                attendee.save()
+            if not attendee : 
+                if (one_event.is_there_enough_quota() ):
+                    attendee = Attendee.objects.create(event= one_event, user=user)
+                    attendee.save()
             else:
                 attendee.delete()
             return redirect('event', pk=pk)
-
+        elif 'Delete' in request.POST:
+            Event.objects.filter(pk=one_event.pk).delete()
+            return redirect('home')
 
 class NewEvent(View):
     def get(self, request):
@@ -65,13 +69,14 @@ class NewEvent(View):
 class EventUpdate(UpdateView):
     model = Event
     fields = ('name', 'description', 'date', 'place', 'payment_type',
-        'payment', 'category_name', 'is_online')
+        'payment', 'category_name', 'is_online', 'max_num_of_attendees')
     template_name = 'edit_event.html'
     pk_url_kwarg = 'pk'
     context_object_name = 'one_event'
 
     def form_valid(self, form):
         one_event = form.save(commit=False)
+        one_event.category = Category.objects.get(name=one_event.category_name)
         one_event.updated_at = datetime.datetime.now()
         one_event.save()
         return redirect('event', pk=one_event.pk)
@@ -105,6 +110,21 @@ class ReplyUpdate(UpdateView):
         reply.save()
         return redirect('event', pk=reply.event.pk)
 
+
+class LikeAjax(View):
+    def post(self, request):
+        data = {'is_liked': True}
+        event_pk = request.POST['event_pk']
+        one_event = Event.objects.get(pk=event_pk)
+        liked = LikedEvent.objects.filter(event=one_event, liked_by=request.user)
+        if not liked:
+            like = LikedEvent.objects.create(liked_by=request.user, event=one_event)
+            like.save()
+            data['is_liked'] = True
+        else:
+            liked.delete()
+            data['is_liked'] = False
+        return JsonResponse(data)
 
         
 

@@ -26,6 +26,7 @@ class Event(models.Model):
     place = models.CharField(max_length=150, default='Not specified')
     category_name = models.CharField(max_length=7 ,choices=Category.CATEGORY_CHOICES ,default=Category.ELSE)
     category = models.ForeignKey(Category, on_delete=CASCADE, null=True, related_name="events_of_cat")
+    max_num_of_attendees = models.IntegerField(default=0)
 
     def get_replies_count(self):
         return Reply.objects.filter(event=self).count()
@@ -37,11 +38,17 @@ class Event(models.Model):
         if(self.is_online):
             return 'Online'
         else:
-            #return place
             return 'Face-to-face'
     
     def get_attendees_count(self):
         return self.attendees.count()
+
+
+    def remaining_quota(self):
+        return self.max_num_of_attendees - self.get_attendees_count()
+
+    def is_there_enough_quota(self):
+        return (self.remaining_quota() > 0)
 
 
 class Reply(models.Model):

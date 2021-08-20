@@ -45,7 +45,10 @@ class RegisterForm(forms.ModelForm):
     twitter = forms.CharField()
     instagram = forms.CharField()
     facebook = forms.CharField()
+    profile_picture = forms.ImageField(
+        required=False
+    )
     class Meta:
         model = Profile
         fields = [ 'name', 'surname', 'age', 'gender', 'phone_number', 
-            'website', 'twitter', 'instagram', 'facebook' ]
+            'website', 'twitter', 'instagram', 'facebook', 'profile_picture' ]

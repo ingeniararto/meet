@@ -56,7 +56,7 @@ class Account(View):
 class ProfileUpdate(UpdateView):
     model = Profile
     fields = ('name', 'surname', 'age', 'gender', 'phone_number', 'website', 
-        'twitter', 'instagram', 'facebook' )
+        'twitter', 'instagram', 'facebook', 'profile_picture' )
     template_name = 'edit_profile.html'
     pk_url_kwarg = 'id'
     context_object_name = 'profile'

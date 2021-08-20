@@ -25,17 +25,15 @@ class NewEventForm(forms.ModelForm):
     )
     place = forms.CharField(
         widget = forms.Textarea(
-            attrs = {'rows': 5, 'placeholder': 'Place'}
-        ),        
+            attrs = {'rows': 2, 'placeholder': 'Place'}
+        ),     
+        required = False,   
         max_length = 4000,
         help_text = 'The max length of the text is 4000.'
     )
-    payment_type = forms.CharField(
-        widget = forms.Textarea(
-            attrs = {'rows': 1, 
-                'placeholder': 'Please indicate the payment type'}
-        ),
-        help_text = 'Free/Not free/Go Dutch'
+    payment_type = forms.ChoiceField(
+        required = True,
+        choices = Event.PAYMENT_CHOICES
     )
     payment = forms.FloatField(
         widget = forms.NumberInput(
@@ -49,12 +47,15 @@ class NewEventForm(forms.ModelForm):
         choices = Category.CATEGORY_CHOICES
     )
     is_online = forms.BooleanField(
+        required = False
+    )
+    max_num_of_attendees = forms.IntegerField(
         required = True
     )
     class Meta:
         model = Event
         fields = ['name', 'description', 'date', 'place', 
-            'payment_type','payment', 'category_name', 'is_online']
+            'payment_type','payment', 'category_name', 'is_online', 'max_num_of_attendees']
 
 class ReplyForm(forms.ModelForm):
     message = forms.CharField(
