@@ -1,5 +1,3 @@
-from django.db.models import fields
-from accounts.models import LikedEvent
 from categories.models import Category
 from django import forms
 from .models import Event, Reply, Attendee
@@ -36,9 +34,10 @@ class NewEventForm(forms.ModelForm):
         choices = Event.PAYMENT_CHOICES
     )
     payment = forms.FloatField(
+        initial=0,
         widget = forms.NumberInput(
             attrs = {'rows': 1, 
-                'placeholder': 'Fill this area if the payment type is \'Not free\' '}
+                'placeholder': 'Fill this area with 0 if the payment type is not \'Not free\' '}
         ),
         help_text = 'In terms of TL.'
     )

@@ -55,7 +55,7 @@ class Account(View):
 
 class ProfileUpdate(UpdateView):
     model = Profile
-    fields = ('name', 'surname', 'age', 'gender', 'phone_number', 'website', 
+    fields = ('name', 'surname', 'birthday', 'gender', 'phone_number', 'website', 
         'twitter', 'instagram', 'facebook', 'profile_picture' )
     template_name = 'edit_profile.html'
     pk_url_kwarg = 'id'
@@ -63,6 +63,8 @@ class ProfileUpdate(UpdateView):
 
     def form_valid(self, form):
         profile = form.save(commit=False)
+        if(self.request.user!= profile.user):
+            return redirect('account', id=profile.user.id)
         profile.save()
         return redirect('account', id=profile.user.id)
 

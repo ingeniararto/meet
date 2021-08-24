@@ -1,24 +1,38 @@
-{% extends 'base.html' %} {% block breadcrumb %}
+{% extends 'base.html' %} {% load static%} {% block breadcrumb %}
 <li class="breadcrumb-item active">Followers of
     <a href="{% url 'account' profile.user.id %}">{{profile.user.username}} </a> </li>
 {% endblock %} {% block content %}
-<table class="table">
-    <thead class="thead-inverse">
-        <tr>
-            <th scope="col">Follower</th>
-            <th scope="col">Followers</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for follower in followers %}
-        <tr>
-            <td>
-                <a href="{% url 'account' follower.follower.user.id %}">{{ follower.follower.user.username }}</a>
-                <small class="text-muted d-block">{{ follower.follower.name }} {{ follower.follower.surname }}</small>
-            </td>
-            <td> {{ follower.follower.get_num_of_followers }} </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<section class="shop-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shop__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Photo</th>
+                                <th>Username</th>
+                                <th>Name</th>
+                                <th>Followers</th>
+                            </tr>
+                        </thead>
+                        <tbody>{% for follower in followers %}
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                    <img src="img/shop-cart/cp-1.jpg" alt="">
+                                    <div class="cart__product__item__title">
+                                        <h6><a href="{% url 'account' follower.follower.user.id %}">{{ follower.follower.user.username }}</a></h6>
+                                    </div>
+                                </td>
+                                <td>{{ follower.follower.name }} {{ follower.follower.surname }}</td>
+                                <td>{{ follower.follower.get_num_of_followers }} </td>
+                            </tr>{% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+</section>
 {% endblock %}

@@ -4,33 +4,72 @@
 <li class="breadcrumb-item"><a href="{% url 'event' event.pk %}">{{ event.name }}</a></li>
 <li class="breadcrumb-item active">Post a reply</li>
 {% endblock %} {% block content %}
-<div class="card mb-4 border-dark">
-    <div class="card-header text-dark bg-light py-5 px-3">
-        <div class="row mb-4">
-            <div class="col-10 text-right">
-                <small class="text-muted">By {{ event.created_by.username }} at {{ event.created_at }}</small>
+<section class="blog-details spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-8">
+                <div class="blog__details__content">
+                    <div class="blog__details__item">
+                        <img src="img/blog/details/blog-details.jpg" alt="">
+                        <div class="blog__details__item__title">
+                            <span class="tip">{{event.name}}</span>
+                            <h4>{{event.description}}</h4>
+                            <ul>
+                                <li>by <span>{{event.created_by}}</span></li>
+                                <li>{{event.created_at}}</li>
+                                <li>{{event.get_replies_count}} Replies</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="blog__details__desc">
+                        <p>Afashion season can be defined as much by the people on the catwalk as it can by the clothes they are wearing. This time around, a key moment came at the end of Marc Jacobs’ New York show, when an almost makeup-free Christy Turlington
+                            made a rare return to the catwalk, aged 50 (she also stars, with the designer himself, in the label’s AW ad campaign), where the average catwalk model is around 18.</p>
+                        <p>A few days later, Simone Rocha arguably upped the ante. The 32-year-old’s show – in part inspired by Louise Bourgeois, who lived until she was 98 – featured models in their 30s and 40s, including cult favourite Jeny Howorth and
+                            actor Chloë Sevigny.</p>
+                    </div>
+                    <div class="blog__details__tags">
+                        <a href="#">{{event.category.name}}</a>
+                        <a href="#">{{ event.get_is_online }}</a>
+                    </div>
+                    <div class="blog__details__btns">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="blog__details__btn__item">
+                                    <h6><a href="#"><i class="fa fa-angle-left"></i> Previous posts</a></h6>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="blog__details__btn__item blog__details__btn__item--next">
+                                    <h6><a href="#">Next posts <i class="fa fa-angle-right"></i></a></h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="blog__details__comment">
+                        <h5> {{event.get_replies_count}} Replies</h5>
+                        <a href="{% url 'new_reply' event.pk %}" class="leave-btn">New Reply</a> {% for reply in event.replies.all %}
+                        <div class="blog__comment__item">
+                            <div class="blog__comment__item__pic">
+                                <img src="img/blog/details/comment-1.jpg" alt="">
+                            </div>
+                            <div class="blog__comment__item__text">
+                                <h6>{{reply.created_by}}</h6>
+                                <p>{{reply.message}}</p>
+                                <ul>
+                                    <li><i class="fa fa-clock-o"></i> {{reply.created_at}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
-        </div>{{ event.description }}
-        <div class="col-10 text-right">
-            <small class="text-muted"> {{ event.payment_type }}</small>
+            <form method="post" class="mb-4">
+                {% csrf_token %} {% include 'includes/form.html' %}
+                <button type="submit" class="btn btn-success">Post a reply</button>
+            </form>
         </div>
     </div>
-</div>
-{% for reply in event.replies.all %}
-<div class="card mb-2">
-    <div class="card-body p-3">
-        <div class="row mb-3">
-            <div class="col-6 text-right">
-                <small class="text-muted">{{ reply.created_at }}</small>
-            </div>
-        </div>
-        {{ reply.message }}
-    </div>
-</div>
-{% endfor %}
-<form method="post" class="mb-4">
-    {% csrf_token %} {% include 'includes/form.html' %}
-    <button type="submit" class="btn btn-success">Post a reply</button>
-</form>
+</section>
 
 {% endblock %}

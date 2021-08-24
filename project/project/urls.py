@@ -80,4 +80,6 @@ urlpatterns = [
     re_path(r'^account/(?P<id>\d+)/followers/$', 
         accounts_views.FollowersView.as_view(), name='followers'),
 
+
+
 ]

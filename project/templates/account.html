@@ -71,6 +71,15 @@
                     </div>
                 </div>
                 <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0">Birthday</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        {{profile.birthday}}
+                    </div>
+                </div>
+                <hr>
                 <div class="row">{% if profile.user == user %}
                     <div class="col-sm-12">
                         <a class="btn btn-info " href=" {% url 'edit_profile' profile.id %}">Edit</a>
@@ -85,7 +94,7 @@
                     <div class="card-body">
                         <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">events</i>Appreciation Status</h6>
                         {% for past_event in past_events %}
-                        <small><a href="{% url 'event' past_event.pk %}" class="text">{{past_event.name}}</a> <p class="text-muted font-size-sm">{{past_event.category.name}}</p></small>
+                        <small><a href="{% url 'event' past_event.pk %}" class="text">{{past_event.name}}</a> <p class="text-muted font-size-sm">{{past_event.category.name}}</p> <p class="text-muted font-size-sm">{{past_event.ratings__average}}</p></small>
                         <div class="progress mb-3" style="height: 5px">
                             <div class="progress-bar bg-primary" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>{% endfor %}

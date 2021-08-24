@@ -6,17 +6,23 @@ from .forms import NewEventForm, ReplyForm
 from categories.models import Category
 from django.views import View
 from django.views.generic.edit import UpdateView
-from django.http import JsonResponse
 
 
-# Create your views here.
+
+
 class Home(View):
     def get(self,request):
         events = Event.objects.all()
         categories = Category.objects.all()
         number_of_events = Event.objects.all().count
+        concert = Category.objects.get(id=1)
+        food = Category.objects.get(id=2)
+        party = Category.objects.get(id=3)
+        sport = Category.objects.get(id=4)
+        study = Category.objects.get(id=5)
+        latest_eight_events =Event.objects.order_by('-created_by' )[:4]
         return render(request, 'home.html', {'events': events, 'categories': categories, 
-            'number_of_events': number_of_events })
+            'number_of_events': number_of_events,'concert' : concert, 'food': food, 'party': party,'sport': sport, 'study' : study, 'latest_events': latest_eight_events })
 
 class AllEvents(View):
     def get(self,request):
@@ -58,7 +64,7 @@ class NewEvent(View):
         form = NewEventForm()
         return render(request, 'new_event.html', {'form': form})
     def post(self, request):
-        form = NewEventForm(request.POST)
+        form = NewEventForm(request.POST )
         if form.is_valid():
             one_event = form.save(commit=False)
             one_event.created_by = request.user
@@ -76,6 +82,8 @@ class EventUpdate(UpdateView):
 
     def form_valid(self, form):
         one_event = form.save(commit=False)
+        if(self.request.user!= one_event.created_by):
+            return redirect('event', pk=one_event.pk)
         one_event.category = Category.objects.get(name=one_event.category_name)
         one_event.updated_at = datetime.datetime.now()
         one_event.save()
@@ -103,28 +111,16 @@ class ReplyUpdate(UpdateView):
     template_name = 'edit_reply.html'
     pk_url_kwarg = 'id'
     context_object_name = 'reply'
-
     def form_valid(self, form):
         reply = form.save(commit=False)
+        if(self.request.user!= reply.created_by):
+            return redirect('event', pk=reply.event.pk)
         reply.updated_at = datetime.datetime.now()
         reply.save()
         return redirect('event', pk=reply.event.pk)
 
 
-class LikeAjax(View):
-    def post(self, request):
-        data = {'is_liked': True}
-        event_pk = request.POST['event_pk']
-        one_event = Event.objects.get(pk=event_pk)
-        liked = LikedEvent.objects.filter(event=one_event, liked_by=request.user)
-        if not liked:
-            like = LikedEvent.objects.create(liked_by=request.user, event=one_event)
-            like.save()
-            data['is_liked'] = True
-        else:
-            liked.delete()
-            data['is_liked'] = False
-        return JsonResponse(data)
+
 
         
 

@@ -2,10 +2,9 @@
 <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
 <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'account' profile.user.id %}">My Account</a></li>
 <li class="breadcrumb-item active">Edit Profile</li>
-{% endblock %} {% block content %}
-<form method="post" class="mb-4" novalidate>
+{% endblock %} {% block content %} {% if profile.user == user %}
+<form method="post" class="mb-4" novalidate enctype='multipart/form-data'>
     {% csrf_token %} {% include 'includes/form.html' %}
     <button type="submit" class="btn btn-success">Save changes</button>
-    <a href="{% url 'account' user.id %}" class="btn btn-outline-secondary" role="button">Cancel</a>
-</form>
-{% endblock %}
+    <a href="{% url 'account' profile.user.id %}" class="btn btn-outline-secondary" role="button">Cancel</a>
+</form> {% endif %} {% endblock %}

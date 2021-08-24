@@ -31,10 +31,11 @@ class RegisterForm(forms.ModelForm):
                 attrs = {'rows': 1,}
             )
         )
-    age = forms.IntegerField(
-        widget = forms.NumberInput(
-            attrs = {'rows': 1 }
-        ),
+    birthday = forms.DateField(
+        widget = forms.Textarea(
+            attrs = {'rows': 1, 'placeholder': 'Please give the date of your birth'}
+        ), 
+        help_text = 'format: yyyy-mm-dd'
     )
     gender = forms.ChoiceField(
         required = False,
@@ -50,5 +51,5 @@ class RegisterForm(forms.ModelForm):
     )
     class Meta:
         model = Profile
-        fields = [ 'name', 'surname', 'age', 'gender', 'phone_number', 
+        fields = [ 'name', 'surname', 'birthday', 'gender', 'phone_number', 
             'website', 'twitter', 'instagram', 'facebook', 'profile_picture' ]

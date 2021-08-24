@@ -2,8 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE
 from categories.models import Category
-
+import datetime
+from django.contrib.contenttypes.fields import GenericRelation
 # Create your models here.
+
+
 class Event(models.Model):
     FREE = "Free"
     ENTRANCE_FEE = "Not free"
@@ -14,7 +17,7 @@ class Event(models.Model):
         (GO_DUTCH, "Go Dutch"),
     )
 
-    name = models.CharField(max_length=70, unique=True)
+    name = models.CharField(max_length=70)
     description = models.CharField(max_length=150)
     is_online = models.BooleanField(default=False)
     payment = models.FloatField(default=0)
@@ -49,6 +52,9 @@ class Event(models.Model):
 
     def is_there_enough_quota(self):
         return (self.remaining_quota() > 0)
+
+    def is_occured(self):
+        return  (self.date <= datetime.datetime.now(self.date.tzinfo))
 
 
 class Reply(models.Model):

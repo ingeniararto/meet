@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE
 from events.models import Event
+import datetime
 # Create your models here.
 
 class Profile(models.Model):
@@ -9,7 +10,7 @@ class Profile(models.Model):
         null=True, related_name='profile' )
     name = models.CharField(max_length=22, default="-")
     surname = models.CharField(max_length=22, default="-")
-    age = models.IntegerField()
+    birthday = models.DateField(null=True)
     UNSPECIFIED = "Do not want to specify"
     MALE = "Male"
     FEMALE = "Female"
@@ -25,11 +26,10 @@ class Profile(models.Model):
     twitter = models.CharField(default="-", max_length = 50)
     instagram = models.CharField(default="-", max_length = 50)
     facebook = models.CharField(default="-", max_length = 50)
-    profile_picture = models.ImageField(upload_to = 'static/uploads/', default = None)
+    profile_picture = models.ImageField(upload_to = 'static/uploads/', default = None, blank = True, editable = True)
 
     def get_num_of_followers(self):
         return self.followers.all().count()
-
     
 
 
