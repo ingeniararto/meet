@@ -30,6 +30,7 @@ class Event(models.Model):
     category_name = models.CharField(max_length=7 ,choices=Category.CATEGORY_CHOICES ,default=Category.ELSE)
     category = models.ForeignKey(Category, on_delete=CASCADE, null=True, related_name="events_of_cat")
     max_num_of_attendees = models.IntegerField(default=0)
+    event_picture = models.ImageField(upload_to = 'media/events/',null= True , blank = True, editable = True)
 
     def get_replies_count(self):
         return Reply.objects.filter(event=self).count()
@@ -56,6 +57,12 @@ class Event(models.Model):
     def is_occured(self):
         return  (self.date <= datetime.datetime.now(self.date.tzinfo))
 
+    def get_image(self):
+        if not self.event_picture:
+            default_path = "static/img/product/no_image.png"
+            return default_path
+        else:
+            return self.event_picture.url
 
 class Reply(models.Model):
     event = models.ForeignKey(Event,on_delete=models.CASCADE , related_name='replies')

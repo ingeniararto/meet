@@ -26,11 +26,27 @@ class Profile(models.Model):
     twitter = models.CharField(default="-", max_length = 50)
     instagram = models.CharField(default="-", max_length = 50)
     facebook = models.CharField(default="-", max_length = 50)
-    profile_picture = models.ImageField(upload_to = 'static/uploads/', default = None, blank = True, editable = True)
+    profile_picture = models.ImageField(upload_to = 'static/uploads/', default= None, blank = True, editable = True)
 
     def get_num_of_followers(self):
         return self.followers.all().count()
-    
+
+    def get_image(self):
+        if(self.profile_picture):
+            print('success')
+            return self.profile_picture.url
+        else:
+            print('fail')
+            if(self.gender=='Male'):
+                print('Male')
+                return "https://bootdey.com/img/Content/avatar/avatar2.png"
+            elif (self.gender == 'Female'):
+                print('Female')
+                return "https://bootdey.com/img/Content/avatar/avatar3.png"
+            else:
+                print('Else')
+                return "https://www.yesilist.com/wp-content/uploads/2016/03/no-user-image.gif"
+
 
 
 

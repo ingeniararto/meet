@@ -84,9 +84,9 @@
                 <div class="col-xl-8 col-lg-10">
                     <nav class="header__menu">
                         <ul>
-                            <li class="active"><a href="{% url 'home' %}">Home</a></li>
+                            <li><a href="{% url 'home' %}">Home</a></li>
                             <li><a href="{% url 'all_events' %}">Events</a></li>
-                            <li><a href="#">Profiles</a></li>
+                            <li><a href="{% url 'profiles' %}">Profiles</a></li>
                             <li><a href="#">Categories</a>
                                 <ul class="dropdown">
                                     <li><a href="{% url 'category' 1%}">Concert</a></li>

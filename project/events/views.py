@@ -10,6 +10,7 @@ from django.views.generic.edit import UpdateView
 
 
 
+
 class Home(View):
     def get(self,request):
         events = Event.objects.all()
@@ -64,7 +65,7 @@ class NewEvent(View):
         form = NewEventForm()
         return render(request, 'new_event.html', {'form': form})
     def post(self, request):
-        form = NewEventForm(request.POST )
+        form = NewEventForm(request.POST, request.FILES )
         if form.is_valid():
             one_event = form.save(commit=False)
             one_event.created_by = request.user
@@ -75,7 +76,7 @@ class NewEvent(View):
 class EventUpdate(UpdateView):
     model = Event
     fields = ('name', 'description', 'date', 'place', 'payment_type',
-        'payment', 'category_name', 'is_online', 'max_num_of_attendees')
+        'payment', 'category_name', 'is_online', 'max_num_of_attendees', 'event_picture')
     template_name = 'edit_event.html'
     pk_url_kwarg = 'pk'
     context_object_name = 'one_event'

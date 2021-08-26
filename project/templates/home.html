@@ -73,35 +73,37 @@
             {% for event in latest_events %}
             <div class="col-lg-3 col-md-4 col-sm-6 mix {{event.category.name}}">
                 <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-1.jpg' %}">
-                        <div class="label new">New</div>
-                        <ul class="product__hover">
-                            <li><a href="{{event.photo}}" class="image-popup"><span class="arrow_expand"></span></a></li>
-                            <li><a href="#"><span class="icon_heart_alt"></span>  {{ event.get_likes_count }}</a></li>
-                            <li><a href="{% url 'new_reply' event.pk %}"><span class="fa fa-reply"></span>  {{ event.get_replies_count }} </a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="{% url 'event' event.pk %}">{{event.name}}</a></h6>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
+                    {% if event.event_picture %}
+                    <div class="product__item__pic set-bg" data-setbg="{{ event.event_picture.url }}"> {% else %}
+                        <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/no_image.png' %}"> {% endif %}
+                            <div class="label new">New</div>
+                            <ul class="product__hover">
+                                <li><a href="{{event.photo}}" class="image-popup"><span class="arrow_expand"></span></a></li>
+                                <li><a href="#"><span class="icon_heart_alt"></span>  {{ event.get_likes_count }}</a></li>
+                                <li><a href="{% url 'new_reply' event.pk %}"><span class="fa fa-reply"></span>  {{ event.get_replies_count }} </a></li>
+                            </ul>
                         </div>
-                        <div class="product__price">{% if event.payment_type == 'Not free' %} {{event.payment}} TL {% else %} {{ event.payment_type }} {% endif %}</div>
+                        <div class="product__item__text">
+                            <h6><a href="{% url 'event' event.pk %}">{{event.name}}</a></h6>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product__price">{% if event.payment_type == 'Not free' %} {{event.payment}} TL {% else %} {{ event.payment_type }} {% endif %}</div>
+                        </div>
                     </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
-    </div>
 </section>
 <!-- Product Section End -->
 
 <!-- Banner Section Begin -->
-<section class="banner set-bg" data-setbg="{% static 'img/banner/banner-1.jpg' %}">
+<section class="banner set-bg" data-setbg="{% static 'img/banner/banner-new.jpg' %}">
     <div class="container">
         <div class="row">
             <div class="col-xl-7 col-lg-8 m-auto">

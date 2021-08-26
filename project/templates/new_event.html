@@ -1,12 +1,13 @@
-{% extends 'base.html' %} {% load static %} {% block title %}Plan an event{% endblock %} {% block breadcrumb %}
+{% extends 'base.html' %} {% load static %} {% load bootstrap4 %} {% block title %}Plan an event{% endblock %} {% block breadcrumb %}
 <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
 <li class="breadcrumb-item"><a href="{% url 'all_events' %}">Events</a></li>
 <li class="breadcrumb-item active">Plan an event</li>
 {% endblock %} {% block content %}
 
-<form method="post" class="mb-4">
-    {% csrf_token %} {% include 'includes/form.html' %}
+<form method="post" class="mb-4" novalidate enctype='multipart/form-data'>
+    {% csrf_token %} {% include 'includes/form.html' %} {% bootstrap_css %} {% bootstrap_javascript jquery='full' %} {{ form.media }}
     <button type="submit" class="btn btn-success">Plan a event</button>
 </form>
+
 
 {% endblock %}

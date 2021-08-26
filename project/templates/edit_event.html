@@ -1,11 +1,11 @@
-{% extends 'base.html' %} {% block title %}Edit event{% endblock %} {% block breadcrumb %}
+{% extends 'base.html' %} {% load static %} {% load bootstrap4 %} {% block title %}Edit event{% endblock %} {% block breadcrumb %}
 <li class="breadcrumb-item"><a href="{% url 'home' %}">Meet</a></li>
 <li class="breadcrumb-item"><a href="{% url 'all_events' %}"> Events</a></li>
 <li class="breadcrumb-item"><a href="{% url 'event' one_event.pk %}">{{ one_event.name }}</a></li>
 <li class="breadcrumb-item active">Edit Event</li>
 {% endblock %} {% block content %} {% if one_event.created_by == user %}
-<form method="post" class="mb-4" novalidate>
-    {% csrf_token %} {% include 'includes/form.html' %}
+<form method="post" class="mb-4" novalidate enctype='multipart/form-data'>
+    {% csrf_token %} {% include 'includes/form.html' %} {% bootstrap_css %} {% bootstrap_javascript jquery='full' %} {{ form.media }}
     <button type="submit" class="btn btn-success">Save changes</button>
     <a href="{% url 'event' one_event.pk %}" class="btn btn-outline-secondary" role="button">Cancel</a>
 </form>{% endif %} {% endblock %}

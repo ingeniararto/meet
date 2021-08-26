@@ -20,6 +20,8 @@ from accounts import views as accounts_views
 from events import views
 from django.contrib.auth import views as auth_views
 from categories import views as cat_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -80,6 +82,9 @@ urlpatterns = [
     re_path(r'^account/(?P<id>\d+)/followers/$', 
         accounts_views.FollowersView.as_view(), name='followers'),
 
+    re_path(r'^profiles/$', 
+        accounts_views.ProfilesView.as_view(), name='profiles'),
 
 
-]
+
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

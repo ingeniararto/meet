@@ -1,6 +1,7 @@
 from categories.models import Category
 from django import forms
 from .models import Event, Reply, Attendee
+from bootstrap_datepicker_plus import DateTimePickerInput
 
 class NewEventForm(forms.ModelForm):
     name = forms.CharField(
@@ -16,10 +17,7 @@ class NewEventForm(forms.ModelForm):
         help_text = 'The max length of the text is 4000.'
     )
     date = forms.DateTimeField(
-        widget = forms.Textarea(
-            attrs = {'rows': 1, 'placeholder': 'Please give the date of event'}
-        ), 
-        help_text = 'format: yyyy-mm-dd hh:mm:ss'
+        widget = DateTimePickerInput(format='%Y-%m-%d %H:%M:%S')
     )
     place = forms.CharField(
         widget = forms.Textarea(
@@ -51,10 +49,13 @@ class NewEventForm(forms.ModelForm):
     max_num_of_attendees = forms.IntegerField(
         required = True
     )
+    event_picture = forms.ImageField(
+        required=False
+    )
     class Meta:
         model = Event
         fields = ['name', 'description', 'date', 'place', 
-            'payment_type','payment', 'category_name', 'is_online', 'max_num_of_attendees']
+            'payment_type','payment', 'category_name', 'is_online', 'max_num_of_attendees', 'event_picture']
 
 class ReplyForm(forms.ModelForm):
     message = forms.CharField(

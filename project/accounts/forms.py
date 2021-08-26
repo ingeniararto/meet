@@ -3,6 +3,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Profile
+from bootstrap_datepicker_plus import DatePickerInput
 
 class SignUpForm(UserCreationForm):
     email = forms.CharField(
@@ -32,10 +33,7 @@ class RegisterForm(forms.ModelForm):
             )
         )
     birthday = forms.DateField(
-        widget = forms.Textarea(
-            attrs = {'rows': 1, 'placeholder': 'Please give the date of your birth'}
-        ), 
-        help_text = 'format: yyyy-mm-dd'
+        widget = DatePickerInput(format='%Y-%m-%d')
     )
     gender = forms.ChoiceField(
         required = False,

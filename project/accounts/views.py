@@ -25,7 +25,7 @@ class Registry(View):
         form = RegisterForm()
         return render(request, 'registry.html', {'form': form})
     def post(self, request):
-        form = RegisterForm(request.POST)
+        form = RegisterForm(request.POST, request.FILES)
         if form.is_valid():
             profile = form.save()
             profile.user = request.user
@@ -76,3 +76,8 @@ class FollowersView(View):
         return render(request, 'followers.html', {'profile': profile, 
             'followers': followers })
 
+
+class ProfilesView(View):
+    def get(self, request):
+        profiles = Profile.objects.all()
+        return render(request, 'profiles.html', {'profiles':profiles})

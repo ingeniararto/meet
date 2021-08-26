@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'accounts',
     'categories',
+    'bootstrap_datepicker_plus',
+    'bootstrap4',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -154,3 +156,13 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = "meettobehappy@gmail.com"
 EMAIL_HOST_PASSWORD = "0123456789.Nokta"
 EMAIL_USE_TLS = True
+
+
+
+BOOTSTRAP4 = {
+    'include_jquery': True,
+}
+
+MEDIA_ROOT = '/events/'
+
+MEDIA_URL = '/media/'
