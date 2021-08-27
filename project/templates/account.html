@@ -82,7 +82,7 @@
                 <hr>
                 <div class="row">{% if profile.user == user %}
                     <div class="col-sm-12">
-                        <a class="btn btn-info " href=" {% url 'edit_profile' profile.id %}">Edit</a>
+                        <a class="btn btn-info " href=" {% url 'edit_profile' profile.user.id %}">Edit</a>
                     </div>{% endif %}
                 </div>
             </div>

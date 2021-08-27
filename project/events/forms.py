@@ -80,5 +80,19 @@ class AppreciationForm(forms.ModelForm):
         model = Attendee
         fields = ['appreciation_level', ]
 
+class UpdateEventForm(forms.ModelForm):
+    date = forms.DateTimeField(
+        widget = DateTimePickerInput(format='%Y-%m-%d %H:%M:%S')
+    )
+    class Meta:
+        model = Event
+        fields = ['name', 'description', 'date', 'place', 
+            'payment_type','payment', 'category_name', 'is_online', 'max_num_of_attendees', 'event_picture']
+
+class UpdateReplyForm(forms.ModelForm):
+    class Meta:
+        model = Reply
+        fields = ['message', ]
+
 
         

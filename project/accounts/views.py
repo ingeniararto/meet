@@ -1,7 +1,7 @@
 from django.contrib.auth import login as auth_login
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.models import User
-from .forms import SignUpForm, RegisterForm
+from .forms import SignUpForm, RegisterForm, UpdateProfileForm
 from .models import Follower, Profile
 from django.views import View
 from django.views.generic.edit import UpdateView
@@ -52,8 +52,25 @@ class Account(View):
                 follower.delete()
             return redirect('account',id=id)
 
+class UpdateProfileView(View):
+    def get(self, request, id):
+        user = get_object_or_404(User, id=id)
+        profile = get_object_or_404(Profile, user=user)
+        form = UpdateProfileForm(instance=profile)
+        return render(request, 'edit_profile.html', {'profile': profile, 'form':form })
+    def post(self, request, id):
+        user = get_object_or_404(User, id=id)
+        profile = get_object_or_404(Profile, user=user)
+        form = UpdateProfileForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save(commit=False)
+            if(self.request.user!= profile.user):
+                return redirect('account', id=id)
+            profile.save()
+            return redirect('account', id=id)
 
-class ProfileUpdate(UpdateView):
+
+"""class ProfileUpdate(UpdateView):
     model = Profile
     fields = ('name', 'surname', 'birthday', 'gender', 'phone_number', 'website', 
         'twitter', 'instagram', 'facebook', 'profile_picture' )
@@ -66,7 +83,7 @@ class ProfileUpdate(UpdateView):
         if(self.request.user!= profile.user):
             return redirect('account', id=profile.user.id)
         profile.save()
-        return redirect('account', id=profile.user.id)
+        return redirect('account', id=profile.user.id)"""
 
 
 class FollowersView(View):

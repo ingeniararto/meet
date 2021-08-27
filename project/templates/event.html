@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block title %} {{ event.name }} - {{ block.super }} {% endblock %} {% block breadcrumb %}
+{% extends 'base.html' %} {% load static %} {% block title %} {{ event.name }} - {{ block.super }} {% endblock %} {% block breadcrumb %}
 <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
 {% if flag %}
 <li class="breadcrumb-item"><a href="{% url 'categories' %}">Categories</a></li> {% endif %}
@@ -73,7 +73,14 @@
                                     <h6>{% if user.is_authenticated and not event.created_by == user %}
                                         <form method="post" novalidate>
                                             {% csrf_token %}
-                                            <button name='Like' type="submit">Like <i class="fas fa-thumbs-up fa-beat fa-1x "></i> </button> {% if not event.is_occured %} <button name='Attend' type="submit">Attend <i class="fa fa-plus" aria-hidden="true"></i></button>                                            {%endif %}
+                                            <button name='Like' type="submit">Like <i class="fas fa-thumbs-up fa-beat fa-1x "></i> </button>
+                                            <!--<div class="like-btn" style="display: inline">
+                                                <a href="javascript:void();" id="like" {% if liked %} style="margin-right: 5px; color: #7c071b" {% else %} style="margin-right: 10px; color: #726f6f" {% endif %} onclick="Like({{ event.pk }};">
+                                                    <div class="fa-stack fa-2x" style="margin-right: 10px">
+                                                        <i class="fa fa-heart fa-stack-2x"></i>
+                                                    </div>
+                                                </a>
+                                            </div> -->{% if not event.is_occured %} <button name='Attend' type="submit">Attend <i class="fa fa-plus" aria-hidden="true"></i></button> {%endif %}
                                         </form> <br> {% endif %} {{event.get_likes_count}} likes / {{event.get_attendees_count}} attendees
                                     </h6>
                                 </div>
@@ -125,4 +132,33 @@
     </div>
     </div>
 </section>
+<!--<script>
+    $("#my-like-form").submit(function(e){
+    e.preventDefault(); 
+
+    var form = $(this);
+    function Like(pk) {
+        $.ajax({
+            type: "POST",
+            url: "{% url 'add_remove_like' %}",
+            data: {
+                pk: pk,
+                'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+            },
+            dataType: "json",
+            success: function(data) {
+
+                if (data['liked']) {
+                    $("#like").css('color', '#7c071b')
+                    $("#like-text").html("Liked")
+                } else {
+                    btn.css("color", "black");
+                    $("#like").css('color', '#726f6f')
+                    $("#like-text").html("Like")
+                }
+
+            }
+        })
+    }
+</script> -->
 {% endblock %}

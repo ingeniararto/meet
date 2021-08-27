@@ -22,6 +22,7 @@ from django.contrib.auth import views as auth_views
 from categories import views as cat_views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -72,19 +73,18 @@ urlpatterns = [
 
 
 #edit urls
-    re_path(r'^event/(?P<pk>\d+)/reply/(?P<id>\d+)/edit/$',
-        views.ReplyUpdate.as_view(), name='edit_reply'),
-    re_path(r'^event/(?P<pk>\d+)/edit/$',
-        views.EventUpdate.as_view(), name='edit_event'), 
-    re_path(r'^account/(?P<id>\d+)/edit/$',
-        accounts_views.ProfileUpdate.as_view(), name='edit_profile'), 
-
+    path('event/<int:pk>/reply/<int:id>/edit/',
+        views.UpdateReplyView.as_view(), name='edit_reply'),
+    path('event/<int:pk>/edit/',
+        views.UpdateEventView.as_view(), name='edit_event'), 
+    path('account/<int:id>/edit/',
+        accounts_views.UpdateProfileView.as_view(), name='edit_profile'), 
     re_path(r'^account/(?P<id>\d+)/followers/$', 
         accounts_views.FollowersView.as_view(), name='followers'),
 
     re_path(r'^profiles/$', 
         accounts_views.ProfilesView.as_view(), name='profiles'),
 
-
+    re_path(r'^liked/$', login_required(views.AddRemoveLike.as_view()), name='add_remove_like'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

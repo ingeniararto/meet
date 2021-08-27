@@ -1,13 +1,13 @@
 import datetime
+
+from django.http.response import JsonResponse
 from accounts.models import LikedEvent
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Attendee, Event, Reply
-from .forms import NewEventForm, ReplyForm
+from .forms import NewEventForm, ReplyForm, UpdateEventForm, UpdateReplyForm
 from categories.models import Category
 from django.views import View
-from django.views.generic.edit import UpdateView
-
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 
@@ -35,7 +35,8 @@ class AllEvents(View):
 class OneEvent(View):
     def get(self, request, pk):
         one_event = get_object_or_404(Event, pk=pk)
-        return render(request, 'event.html', {'event': one_event, 'flag': False})
+        liked = LikedEvent.objects.filter(event = one_event, liked_by=request.user)
+        return render(request, 'event.html', {'event': one_event, 'flag': False, 'liked': liked})
     def post(self, request, pk):
         user = request.user
         one_event = get_object_or_404(Event, pk=pk)
@@ -73,7 +74,24 @@ class NewEvent(View):
             one_event.save()
             return  redirect('all_events')
 
-class EventUpdate(UpdateView):
+class UpdateEventView(View):
+    def get(self, request, pk):
+        one_event = get_object_or_404(Event, pk=pk)
+        form = UpdateEventForm(instance=one_event)
+        return render(request, 'edit_event.html', {'one_event': one_event, 'form': form})
+    def post(self, request, pk):
+        one_event = get_object_or_404(Event, pk=pk)
+        form = UpdateEventForm(request.POST, instance=one_event)
+        if form.is_valid():
+            form.save(commit=False)
+            if(self.request.user!= one_event.created_by):
+                return redirect('event', pk=pk)
+            one_event.category = Category.objects.get(name=one_event.category_name)
+            one_event.updated_at = datetime.datetime.now()
+            one_event.save()
+            return redirect('event', pk=pk)
+
+"""class EventUpdate(UpdateView):
     model = Event
     fields = ('name', 'description', 'date', 'place', 'payment_type',
         'payment', 'category_name', 'is_online', 'max_num_of_attendees', 'event_picture')
@@ -88,7 +106,7 @@ class EventUpdate(UpdateView):
         one_event.category = Category.objects.get(name=one_event.category_name)
         one_event.updated_at = datetime.datetime.now()
         one_event.save()
-        return redirect('event', pk=one_event.pk)
+        return redirect('event', pk=one_event.pk)"""
 
 class NewReply(View):
     def get(self, request, pk):
@@ -106,7 +124,24 @@ class NewReply(View):
             reply.save()
             return redirect('event', pk=pk)
 
-class ReplyUpdate(UpdateView):
+
+class UpdateReplyView(View):
+    def get(self, request, pk, id):
+        reply = get_object_or_404(Reply, id=id)
+        form = UpdateReplyForm(instance = reply)
+        return render(request, 'edit_reply.html', {'reply': reply, 'form': form})
+    def post(self, request, pk, id):
+        reply = get_object_or_404(Reply, id=id)
+        form = UpdateReplyForm(request.POST ,instance = reply)
+        if form.is_valid():
+            form.save(commit=False)
+            if(self.request.user!= reply.created_by):
+                return redirect('event', pk=reply.event.pk)
+            reply.updated_at = datetime.datetime.now()
+            reply.save()
+            return redirect('event', pk=reply.event.pk)
+
+"""class ReplyUpdate(UpdateView):
     model = Reply
     fields = ('message',)
     template_name = 'edit_reply.html'
@@ -118,10 +153,28 @@ class ReplyUpdate(UpdateView):
             return redirect('event', pk=reply.event.pk)
         reply.updated_at = datetime.datetime.now()
         reply.save()
-        return redirect('event', pk=reply.event.pk)
+        return redirect('event', pk=reply.event.pk)"""
 
 
+class AddRemoveLike(LoginRequiredMixin, View):
+    def post(self, request):
+        data = {'liked': True}
+        pk = request.POST['pk']
+        event = get_object_or_404(Event, pk=pk)
+        user = request.user
+        liked = LikedEvent.objects.filter(event=event, liked_by=user)
+        if( liked):
+            liked.delete()
+            data["liked"] = True
+        else:
+            LikedEvent.objects.create(event=event, liked_by=user)
+            data["liked"] = False
+        data["count"] = event.get_likes_count()
+        
+        return JsonResponse(data)
 
+
+    
 
         
 
