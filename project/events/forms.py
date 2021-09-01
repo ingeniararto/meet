@@ -71,11 +71,6 @@ class ReplyForm(forms.ModelForm):
 
 
 class AppreciationForm(forms.ModelForm):
-    appreciation_level = forms.ChoiceField(
-        required = False,
-        choices = Attendee.APPRECIATION_CHOICES
-    )
-
     class Meta:
         model = Attendee
         fields = ['appreciation_level', ]

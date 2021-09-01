@@ -96,7 +96,7 @@
                         {% for past_event in past_events %}
                         <small><a href="{% url 'event' past_event.pk %}" class="text">{{past_event.name}}</a> <p class="text-muted font-size-sm">{{past_event.category.name}}</p> <p class="text-muted font-size-sm">{{past_event.ratings__average}}</p></small>
                         <div class="progress mb-3" style="height: 5px">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: {{past_event.get_appreciation_level_percentage}}%" aria-valuenow="{{past_event.get_appreciation_level_percentage}}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>{% endfor %}
                     </div>
                 </div>
@@ -131,7 +131,17 @@
                 </div>
             </div>
         </div>
-
+        <div class="row gutters-sm">
+            <div class="col-sm-6 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">events</i>Would Like To Attend</h6>
+                        {% for attend_event in wlt_attend_events %}
+                        <small><a href="{% url 'event' attend_event.event.pk %}" class="text">{{attend_event.event.name}}</a> <p class="text-muted font-size-sm">{{attend_event.event.category.name}}</p></small> {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
     </div>

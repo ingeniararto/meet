@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from os import name
 from django.contrib import admin
 from django.urls import path, re_path
 from django.urls.conf import include
@@ -79,12 +80,15 @@ urlpatterns = [
         views.UpdateEventView.as_view(), name='edit_event'), 
     path('account/<int:id>/edit/',
         accounts_views.UpdateProfileView.as_view(), name='edit_profile'), 
-    re_path(r'^account/(?P<id>\d+)/followers/$', 
+    path('account/<int:id>/followers/', 
         accounts_views.FollowersView.as_view(), name='followers'),
 
     re_path(r'^profiles/$', 
         accounts_views.ProfilesView.as_view(), name='profiles'),
 
     re_path(r'^liked/$', login_required(views.AddRemoveLike.as_view()), name='add_remove_like'),
+    path('liked_events/', accounts_views.LikedEventsView.as_view(), name='liked_events'),
+    path('would_like_to_attend_events/', accounts_views.WouldLikeToAttendView.as_view(), name='wlt_attend_events'),
+    path('event/<int:pk>/appreciation/', views.AppreciationView.as_view(), name='appreciation')
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

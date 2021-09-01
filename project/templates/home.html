@@ -65,7 +65,7 @@
         <div class="row">
             <div class="col-lg-4 col-md-4">
                 <div class="section-title">
-                    <h4>Latest Events</h4>
+                    <h4>Last Created Events</h4>
                 </div>
             </div>
         </div>
@@ -78,20 +78,13 @@
                         <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/no_image.png' %}"> {% endif %}
                             <div class="label new">New</div>
                             <ul class="product__hover">
-                                <li><a href="{{event.photo}}" class="image-popup"><span class="arrow_expand"></span></a></li>
+                                <li><a href="{{ event.event_picture.url }}" class="image-popup"><span class="arrow_expand"></span></a></li>
                                 <li><a href="#"><span class="icon_heart_alt"></span>  {{ event.get_likes_count }}</a></li>
                                 <li><a href="{% url 'new_reply' event.pk %}"><span class="fa fa-reply"></span>  {{ event.get_replies_count }} </a></li>
                             </ul>
                         </div>
                         <div class="product__item__text">
                             <h6><a href="{% url 'event' event.pk %}">{{event.name}}</a></h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
                             <div class="product__price">{% if event.payment_type == 'Not free' %} {{event.payment}} TL {% else %} {{ event.payment_type }} {% endif %}</div>
                         </div>
                     </div>
@@ -101,6 +94,42 @@
         </div>
 </section>
 <!-- Product Section End -->
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-4">
+                <div class="section-title">
+                    <h4>Past Events</h4>
+                </div>
+            </div>
+        </div>
+        <div class="row property__gallery">
+            {% for event in past_events %}
+            <div class="col-lg-3 col-md-4 col-sm-6 mix {{event.category.name}}">
+                <div class="product__item">
+                    {% if event.event_picture %}
+                    <div class="product__item__pic set-bg" data-setbg="{{ event.event_picture.url }}"> {% else %}
+                        <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/no_image.png' %}"> {% endif %}
+                            <div class="label new">New</div>
+                            <ul class="product__hover">
+                                <li><a href="{{ event.event_picture.url }}" class="image-popup"><span class="arrow_expand"></span></a></li>
+                                <li><a href="#"><span class="icon_heart_alt"></span>  {{ event.get_likes_count }}</a></li>
+                                <li><a href="{% url 'new_reply' event.pk %}"><span class="fa fa-reply"></span>  {{ event.get_replies_count }} </a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6><a href="{% url 'event' event.pk %}">{{event.name}}</a></h6>
+                            <div class="rating">
+                                {% with ''|center:event.get_appreciation_level as range %} {% for i in range %}
+                                <i class="fa fa-star"></i> {% endfor %} {% endwith %}</div>
+                            <div class="product__price">{% if event.payment_type == 'Not free' %} {{event.payment}} TL {% else %} {{ event.payment_type }} {% endif %}</div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+</section>
 
 <!-- Banner Section Begin -->
 <section class="banner set-bg" data-setbg="{% static 'img/banner/banner-new.jpg' %}">
@@ -139,7 +168,7 @@
 <section class="trend spad">
     <div class="container">
         <div class="row">
-            <div class="col-lg-6 col-md-4 col-sm-6">
+            <!--<div class="col-lg-6 col-md-4 col-sm-6">
                 <div class="trend__content">
                     <div class="section-title">
                         <h4>Hot Events</h4>
@@ -247,9 +276,9 @@
                             <div class="product__price">$ 59.0</div>
                         </div>
                     </div>
-                </div>
+                </div> 
 
-            </div>
+            </div> -->
         </div>
     </div>
 </section>

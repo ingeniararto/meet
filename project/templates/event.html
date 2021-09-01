@@ -25,13 +25,12 @@
                             </ul>
                         </div>
                     </div>
+                    {% if event.is_occured %}
                     <div class="rating">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
+                        {% for i in appreciation_level %}
+                        <i class="fa fa-star"></i> {% endfor %}
                     </div>
+                    {% endif %}
                     <div class="product__details__widget">
                         <ul>
                             <li>
@@ -112,18 +111,21 @@
             <div class="col-lg-4 col-md-4">
                 <div class="blog__sidebar">
                     <div class="blog__sidebar__item">
+                        {% if event.is_occured %}
                         <div class="section-title">
-                            <h4>Feature posts</h4>
+                            <h4>Appreciations</h4>
                         </div>
-                        <a href="#" class="blog__feature__item">
+                        {% for attendee in attendees %}
+                        <a href="{% url 'account' attendee.user.id %}" class="blog__feature__item">
                             <div class="blog__feature__item__pic">
                                 <img src="img/blog/sidebar/fp-1.jpg" alt="">
                             </div>
                             <div class="blog__feature__item__text">
-                                <h6>XXX</h6>
-                                <span>Seb 17, 2019</span>
+                                <h6>{{attendee.user.username}}</h6>
+                                <span>{{attendee.appreciation_at}}</span>
                             </div>
                         </a>
+                        {% endfor %} {% endif %}
                     </div>
                     </a>
                 </div>
@@ -132,33 +134,4 @@
     </div>
     </div>
 </section>
-<!--<script>
-    $("#my-like-form").submit(function(e){
-    e.preventDefault(); 
-
-    var form = $(this);
-    function Like(pk) {
-        $.ajax({
-            type: "POST",
-            url: "{% url 'add_remove_like' %}",
-            data: {
-                pk: pk,
-                'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
-            },
-            dataType: "json",
-            success: function(data) {
-
-                if (data['liked']) {
-                    $("#like").css('color', '#7c071b')
-                    $("#like-text").html("Liked")
-                } else {
-                    btn.css("color", "black");
-                    $("#like").css('color', '#726f6f')
-                    $("#like-text").html("Like")
-                }
-
-            }
-        })
-    }
-</script> -->
 {% endblock %}

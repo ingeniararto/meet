@@ -1,0 +1,44 @@
+{% extends 'base.html' %} {% load static %} {% block breadcrumb %} {% endblock %} {% block content %}
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-4">
+                <div class="section-title">
+                    <h4>Liked Events</h4>
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-8">
+                <ul class="filter__controls">
+                    <li class="active" data-filter="*">All</li>
+                    <li data-filter=".Concert">Concert</li>
+                    <li data-filter=".Food">Food</li>
+                    <li data-filter=".Party">Party</li>
+                    <li data-filter=".Sport">Sport</li>
+                    <li data-filter=".Study">Study</li>
+                </ul>
+            </div>
+        </div>
+        <div class="row property__gallery">
+            {% for liked_event in liked_events %}
+            <div class="col-lg-3 col-md-4 col-sm-6 mix {{liked_event.event.category.name}}">
+                <div class="product__item"> {% if liked_event.event.event_picture %}
+                    <div class="product__item__pic set-bg" data-setbg="{{ liked_event.event.event_picture.url }}">{% else %}
+                        <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/no_image.png' %}"> {% endif %}
+                            <div class="label new">{{ liked_event.event.date }} </div>
+                            <ul class="product__hover">
+                                <li><a href="{{ liked_event.event.event_picture.url }}" class="image-popup"><span class="arrow_expand"></span></a></li>
+                                <li><a href="#"><span class="icon_heart_alt"></span>  {{ liked_event.event.get_likes_count }}</a></li>
+                                <li><a href="{% url 'new_reply' liked_event.event.pk %}"><span class="fa fa-reply"></span>  {{ liked_event.event.get_replies_count }} </a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6><a href="{% url 'event' liked_event.event.pk %}">{{liked_event.event.name}}</a></h6>
+                            <div class="product__price">{% if liked_event.event.payment_type == 'Not free' %} {{liked_event.event.payment}} TL {% else %} {{ liked_event.event.payment_type }} {% endif %}</div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+</section>
+{% endblock %}

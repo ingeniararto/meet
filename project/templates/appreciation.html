@@ -1,56 +1,137 @@
-{% extends 'base.html' %} {% load static %} {% block stylesheet %}
-<link rel="stylesheet" href="{% static 'css/rating.css' %}"> {% endblock %} {% block title %} {{ event.name }} - {{ block.super }} {% endblock %} {% block breadcrumb %}
+{% extends 'base.html' %} {% load static %} {% block title %}Post a reply{% endblock %} {% block breadcrumb %}
 <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
 <li class="breadcrumb-item"><a href="{% url 'all_events' %}">Events</a></li>
-<li class="breadcrumb-item active">{{ event.name }}</li>
+<li class="breadcrumb-item"><a href="{% url 'event' event.pk %}">{{ event.name }}</a></li>
+<li class="breadcrumb-item active">Post a reply</li>
 {% endblock %} {% block content %}
-
-<div class="card mb-4 border-dark">
-    <div class="card-header text-dark bg-light py-5 px-3">
-        <div class="row mb-4">
-            <div class="col-10 text-right">
-                <small class="text-muted">Created by {{ event.created_by.username }} at {{ event.created_at }}</small>
-            </div>
-        </div>{{ event.description }}
-        <div class="col-10 text-right">
-            <small class="text-muted"> {{ event.payment_type }}</small>
-        </div>
-    </div>
-
-    <div class="card-body p-3">
+<section class="blog-details spad">
+    <div class="container">
         <div class="row">
-            <div class="col-10">
-                <div class="row mb-1">
+            <div class="col-lg-8 col-md-8">
+                <div class="blog__details__content">
+                    <div class="blog__details__item">
+                        <img src="{{event.get_image}}" alt="">
+                        <div class="blog__details__item__title">
+                            <span class="tip">{{event.name}}</span>
+                            <h4>{{event.description}}</h4>
+                            <ul>
+                                <li>by <span>{{event.created_by}}</span></li>
+                                <li>{{event.created_at}}</li>
+                                <li>{{event.get_replies_count}} Replies</li>
+                                <li>{{event.get_attendees_count}} Attendees</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                    </div>
+                    <div class="product__details__widget">
+                        <ul>
+                            <li>
+                                <span>Date:</span> {{event.date}}
+                            </li>
+                            <li>
+                                <span>Quota: </span> {{ event.get_attendees_count }} / {{ event.max_num_of_attendees }}
+                            </li>
+                            <li>
+                                {% if not event.is_online %}<span> Place :</span> {{ event.place }}{% endif %}
+                            </li>
+                            <li>
+                                <span>Payment :</span> {% if event.payment_type == 'Not free' %} {{event.payment}} TL {% else %} {{ event.payment_type }} {% endif %}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="blog__details__desc">
+                    </div>
+                    <div class="blog__details__tags">
+                        <a href="#">{{event.category.name}}</a>
+                        <a href="#">{{ event.get_is_online }}</a>
+                    </div>
+                    <div class="blog__details__btns">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="blog__details__btn__item">
+                                    {% if event.created_by == user %}
+                                    <h6><a href="{% url 'edit_event' event.pk %}"> Edit <i class="fa fa-pencil" aria-hidden="true"></i> </a></h6> {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="blog__details__btn__item blog__details__btn__item--next">
+                                    <h6>{% if event.created_by == user %}
+                                        <form method="post" novalidate>
+                                            {% csrf_token %}
+                                            <button name='Delete' type="submit"> Delete  <i class="fa fa-trash-o" aria-hidden="true"></i></button> {% endif %}
+                                        </form>
+                                    </h6>
+                                    <h6>{% if user.is_authenticated and not event.created_by == user %}
+                                        <form method="post" novalidate>
+                                            {% csrf_token %}
+                                            <button name='Like' type="submit">Like <i class="fas fa-thumbs-up fa-beat fa-1x "></i> </button>
+                                            <!--<div class="like-btn" style="display: inline">
+                                                <a href="javascript:void();" id="like" {% if liked %} style="margin-right: 5px; color: #7c071b" {% else %} style="margin-right: 10px; color: #726f6f" {% endif %} onclick="Like({{ event.pk }};">
+                                                    <div class="fa-stack fa-2x" style="margin-right: 10px">
+                                                        <i class="fa fa-heart fa-stack-2x"></i>
+                                                    </div>
+                                                </a>
+                                            </div> -->{% if not event.is_occured %} <button name='Attend' type="submit">Attend <i class="fa fa-plus" aria-hidden="true"></i></button> {%endif %}
+                                        </form> <br> {% endif %} {{event.get_likes_count}} likes / {{event.get_attendees_count}} attendees
+                                    </h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="blog__details__comment">
+                        <h5> {{event.get_replies_count}} Replies</h5>
+                        <a href="{% url 'new_reply' event.pk %}" class="leave-btn">New Reply <i class="fa fa-reply" aria-hidden="true"></i></a> {% for reply in event.replies.all %}
+                        <div class="blog__comment__item">
+                            <div class="blog__comment__item__pic">
+                                <img src="img/blog/details/comment-1.jpg" alt="">
+                            </div>
+                            <div class="blog__comment__item__text">
+                                <h6>{{reply.created_by}}</h6>
+                                <p>{{reply.message}}</p>
+                                <ul>
+                                    <li><i class="fa fa-clock-o"></i>Created at: {{reply.created_at}}</li>
+                                    <li>Last update: {% if reply.updated_at == null %} {{ reply.created_at }} {% else %} {{ reply.updated_at }} {% endif %} </li>
+                                </ul>
+                            </div>
+                            <br>{% if reply.created_by == user %}
+                            <h6><a href="{% url 'edit_reply' reply.event.pk reply.id %}"> Edit <i class="fa fa-pencil" aria-hidden="true"></i> </a></h6>{% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
                 </div>
-                {% if event.created_by == user %}
-                <a href="#" class="btn btn-info" role="button">Edit</a>{% endif %} {% if user.is_authenticated %}
-                <a href="{% url 'new_reply' event.pk %}" class="btn btn-primary">New reply</a> {% endif %}
-                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star"></span>
-                <span class="fa fa-star"></span>
             </div>
+            <div class="col-lg-4 col-md-4">
+                <div class="blog__sidebar">
+                </div>
+            </div>
+            <form method="post" class="mb-4">
+                {% csrf_token %} {% if event.is_occured %}
+                <div id="full-stars-example-two">
+                    <div class="rating-group">
+                        <input disabled checked class="rating__input rating__input--none" name="rating3" id="rating3-none" value="0" type="radio">
+                        <label aria-label="1 star" class="rating__label" for="rating3-1"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                        <input class="rating__input" name="rating3" id="rating3-1" value="1" type="radio">
+                        <label aria-label="2 stars" class="rating__label" for="rating3-2"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                        <input class="rating__input" name="rating3" id="rating3-2" value="2" type="radio">
+                        <label aria-label="3 stars" class="rating__label" for="rating3-3"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                        <input class="rating__input" name="rating3" id="rating3-3" value="3" type="radio">
+                        <label aria-label="4 stars" class="rating__label" for="rating3-4"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                        <input class="rating__input" name="rating3" id="rating3-4" value="4" type="radio">
+                        <label aria-label="5 stars" class="rating__label" for="rating3-5"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                        <input class="rating__input" name="rating3" id="rating3-5" value="5" type="radio">
+                    </div>
+                    <p class="desc" style="font-family: sans-serif; font-size:0.9rem">Please rate this event</p>
+                </div>
+                <button type="submit" class="btn btn-success">Save</button> {% endif %}
+            </form>
         </div>
     </div>
-</div>
-{% for reply in event.replies.all %}
-<div class="card mb-2">
-    <div class="card-body p-3">
-        <div class="row mb-4">
-            <div class="col-10 text-right">
-                <small class="text-muted">By {{ reply.created_by.username }} at {{ reply.created_at }}</small>
-            </div>
-        </div>
-        <div class="row mb-4">
-            <div class="col-10">
-                {{ reply.message }}
-            </div>
-        </div>
-        <div> {% if reply.created_by == user %}
-            <a href="#" class="btn btn-info" role="button">Edit</a>{% endif %}
-        </div>
-    </div>
-</div>
-{% endfor %} {% endblock %}
+</section>
+
+{% endblock %}

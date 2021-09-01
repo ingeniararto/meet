@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE
 from categories.models import Category
 import datetime
+from datetime import timezone
 from django.contrib.contenttypes.fields import GenericRelation
 # Create your models here.
 
@@ -31,6 +32,7 @@ class Event(models.Model):
     category = models.ForeignKey(Category, on_delete=CASCADE, null=True, related_name="events_of_cat")
     max_num_of_attendees = models.IntegerField(default=0)
     event_picture = models.ImageField(upload_to = 'media/events/',null= True , blank = True, editable = True)
+    
 
     def get_replies_count(self):
         return Reply.objects.filter(event=self).count()
@@ -64,6 +66,33 @@ class Event(models.Model):
         else:
             return self.event_picture.url
 
+    def get_appreciation_level(self):
+        attendees = Attendee.objects.filter(event=self)
+        appreciation_level=0
+        count = 0
+        for attendee in attendees:
+            if(attendee.appreciation_level):
+                appreciation_level = appreciation_level + int(attendee.appreciation_level)
+                count = count + 1
+        if(count == 0):
+            return 0
+        else:
+            return int(appreciation_level/count)
+    
+    def get_appreciation_level_percentage(self):
+        attendees = Attendee.objects.filter(event=self)
+        appreciation_level=0
+        count = 0
+        for attendee in attendees:
+            if(attendee.appreciation_level):
+                appreciation_level = appreciation_level + int(attendee.appreciation_level)
+                count = count + 1
+        if(count == 0):
+            return 0
+        else:
+            return int((appreciation_level*20)/count)
+
+
 class Reply(models.Model):
     event = models.ForeignKey(Event,on_delete=models.CASCADE , related_name='replies')
     message = models.TextField(max_length=4000)
@@ -76,17 +105,5 @@ class Attendee(models.Model):
     event = models.ForeignKey(Event,on_delete=models.CASCADE , related_name='attendees')
     att_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=CASCADE, null=True, related_name='attended_events')
-    DEFAULT = "None"
-    ONE = "1"
-    TWO = "2"
-    THREE = "3"
-    FOUR = "4"
-    FIVE = "5"
-    APPRECIATION_CHOICES = (
-        (ONE, "1"),
-        (TWO, "2"),
-        (THREE, "3"),
-        (FOUR, "4"),
-        (FIVE, "5"),
-    )
-    appreciation_level = models.CharField(max_length=4 ,choices=APPRECIATION_CHOICES ,default=DEFAULT)
+    appreciation_level = models.CharField(max_length= 1, blank=True, default='0')
+    appreciated_at = models.DateTimeField(null=True, default=datetime.datetime.now())

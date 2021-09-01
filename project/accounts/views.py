@@ -4,8 +4,9 @@ from django.contrib.auth.models import User
 from .forms import SignUpForm, RegisterForm, UpdateProfileForm
 from .models import Follower, Profile
 from django.views import View
-from django.views.generic.edit import UpdateView
 import datetime
+from django.contrib.auth.mixins import LoginRequiredMixin
+from datetime import tzinfo
 
 # Create your views here.
 
@@ -36,11 +37,18 @@ class Account(View):
     def get(self, request, id):
         profile = get_object_or_404(Profile, user=get_object_or_404(User, id=id))
         liked_events = profile.user.liked_events.all()
-        attended_events = profile.user.attended_events.all()
+        attended_events = list()
+        wlt_attend_events = list()
         upcoming_events = profile.user.events.filter(date__gt = datetime.date.today())
         past_events = profile.user.events.filter(date__lte = datetime.date.today())
+        for attended_event in profile.user.attended_events.all() :
+            if(attended_event.event.date <= datetime.datetime.now(attended_event.event.date.tzinfo)):
+                attended_events.append(attended_event)
+        for attended_event in profile.user.attended_events.all() :
+            if(attended_event.event.date > datetime.datetime.now(attended_event.event.date.tzinfo)):
+                wlt_attend_events.append(attended_event)
         return render(request, 'account.html', {'profile': profile, 'liked_events': liked_events, 
-            'attended_events': attended_events, 'upcoming_events': upcoming_events, 'past_events': past_events})
+            'attended_events': attended_events,'wlt_attend_events': wlt_attend_events, 'upcoming_events': upcoming_events, 'past_events': past_events})
     def post(self, request, id):
         profile = get_object_or_404(Profile, user=get_object_or_404(User, id=id))
         if 'follow' in request.POST:
@@ -98,3 +106,17 @@ class ProfilesView(View):
     def get(self, request):
         profiles = Profile.objects.all()
         return render(request, 'profiles.html', {'profiles':profiles})
+        
+class LikedEventsView(LoginRequiredMixin, View):
+    def get(self, request):
+        liked_events = self.request.user.liked_events.all()
+        return render(request, 'liked_events.html', {'liked_events': liked_events})
+
+class WouldLikeToAttendView(LoginRequiredMixin, View):
+    def get(self, request):
+        wlt_attend_events = self.request.user.attended_events.all()
+        attended_events = list()
+        for attended_event in wlt_attend_events:
+            if(attended_event.event.date > datetime.datetime.now(attended_event.event.date.tzinfo)):
+                attended_events.append(attended_event)
+        return render(request, 'wlt_attend_events.html', {'attended_events': attended_events})
