@@ -1,14 +1,15 @@
 import datetime
+from os import name
 
-from django.http.response import JsonResponse
-from accounts.models import LikedEvent
+from django.http.response import HttpResponse, JsonResponse
+from accounts.models import Follower, LikedEvent, Profile
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Attendee, Event, Reply
 from .forms import AppreciationForm, NewEventForm, ReplyForm, UpdateEventForm, UpdateReplyForm
 from categories.models import Category
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+import json
 
 
 class Home(View):
@@ -39,13 +40,14 @@ class OneEvent(View):
         liked = LikedEvent.objects.filter(event = one_event, liked_by=request.user)
         appreciation_level = []
         attendees = Attendee.objects.filter(event=one_event)
+        attended = Attendee.objects.filter(event=one_event, user=request.user)
         for i in range(one_event.get_appreciation_level()):
             appreciation_level.append(i)
-        return render(request, 'event.html', {'event': one_event, 'flag': False, 'liked': liked, 'appreciation_level': appreciation_level, 'attendees': attendees})
+        return render(request, 'event.html', {'event': one_event, 'appreciation_level': appreciation_level, 'attendees': attendees, 'liked': liked, 'attended': attended})
     def post(self, request, pk):
-        user = request.user
+        """user = request.user"""
         one_event = get_object_or_404(Event, pk=pk)
-        if 'Like' in request.POST:
+        """if 'Like' in request.POST:
             like = LikedEvent.objects.filter(event= one_event, liked_by=user) 
             if not like: 
                 like = LikedEvent.objects.create(liked_by=user, event=one_event)
@@ -61,8 +63,8 @@ class OneEvent(View):
                     attendee.save()
             else:
                 attendee.delete()
-            return redirect('event', pk=pk)
-        elif 'Delete' in request.POST:
+            return redirect('event', pk=pk)"""
+        if 'Delete' in request.POST:
             Event.objects.filter(pk=one_event.pk).delete()
             return redirect('home')
 
@@ -161,23 +163,6 @@ class UpdateReplyView(View):
         return redirect('event', pk=reply.event.pk)"""
 
 
-class AddRemoveLike(LoginRequiredMixin, View):
-    def post(self, request):
-        data = {'liked': True}
-        pk = request.POST['pk']
-        event = get_object_or_404(Event, pk=pk)
-        user = request.user
-        liked = LikedEvent.objects.filter(event=event, liked_by=user)
-        if( liked):
-            liked.delete()
-            data["liked"] = True
-        else:
-            LikedEvent.objects.create(event=event, liked_by=user)
-            data["liked"] = False
-        data["count"] = event.get_likes_count()
-        
-        return JsonResponse(data)
-
 class AppreciationView(LoginRequiredMixin, View):
     def get(self, request, pk):
         one_event = get_object_or_404(Event, pk=pk)
@@ -197,6 +182,53 @@ class AppreciationView(LoginRequiredMixin, View):
             appreciation.appreciated_at = datetime.datetime.now()
             appreciation.save()
             return redirect('event', pk=pk)
+
+class LikeButtonAjax(LoginRequiredMixin, View):
+    def post(self, request):
+        user = request.user
+        event=get_object_or_404(Event, pk=request.POST['event_pk'])
+        likes= LikedEvent.objects.filter(event=event, liked_by= user)
+        count= event.get_likes_count()
+        if likes:
+            is_liked=False
+            likes.delete()
+            count = count -1
+            #print ('unliked')
+        else:
+            is_liked=True
+            LikedEvent.objects.create(event=event, liked_by=user)
+            count = count +1 
+            #print ('liked')
+        context={'is_liked':is_liked, 'count': count}
+        return HttpResponse(json.dumps(context), content_type='application/json')
+
+class AttendButtonAjax(LoginRequiredMixin, View):
+    def post(self, request):
+        user = request.user
+        event=get_object_or_404(Event, pk=request.POST['event_pk'])
+        print (event)
+        print('event')
+        attendees= Attendee.objects.filter(event=event, user= user)
+        print(attendees)
+        count= event.get_attendees_count()
+        if attendees:
+            is_attended=False
+            attendees.delete()
+            count = count -1
+            print ('not attended')
+        else:
+            is_attended=True
+            Attendee.objects.create(event=event, user=user)
+            count = count +1 
+            print ('attended')
+        context={'is_attended':is_attended, 'count': count}
+        return HttpResponse(json.dumps(context), content_type='application/json')
+
+class SearchResultsView(View):
+    def get(self, request):
+        item = self.request.GET.get('item')
+        results = Event.objects.filter(name__icontains=item)
+        return render(request, 'search_results.html', {'results':results})
 
 
 

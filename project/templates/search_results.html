@@ -1,0 +1,34 @@
+{% extends 'base.html' %} {% load static %} {% block breadcrumb %} {% endblock %} {% block content %}
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-4">
+                <div class="section-title">
+                    <h4>Results</h4>
+                </div>
+            </div>
+        </div>
+        <div class="row property__gallery">
+            {% for result in results %}
+            <div class="col-lg-3 col-md-4 col-sm-6 mix {{result.category.name}}">
+                <div class="product__item"> {% if result.event_picture %}
+                    <div class="product__item__pic set-bg" data-setbg="{{ result.event_picture.url }}">{% else %}
+                        <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/no_image.png' %}"> {% endif %}
+                            <div class="label stockblue">{{ result.date }} </div>
+                            <ul class="product__hover">
+                                <li><a href="{{ result.event_picture.url }}" class="image-popup"><span class="arrow_expand"></span></a></li>
+                                <li><a href="#"><span class="icon_heart_alt"></span>  {{ result.get_likes_count }}</a></li>
+                                <li><a href="{% url 'new_reply' result.pk %}"><span class="fa fa-reply"></span>  {{ result.get_replies_count }} </a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6><a href="{% url 'event' result.pk %}">{{result.name}}</a></h6>
+                            <div class="product__price">{% if result.payment_type == 'Not free' %} {{result.payment}} TL {% else %} {{ result.payment_type }} {% endif %}</div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+</section>
+{% endblock %}

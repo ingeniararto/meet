@@ -1,8 +1,4 @@
 {% extends 'base.html' %} {% load static %} {% block title %} {{ event.name }} - {{ block.super }} {% endblock %} {% block breadcrumb %}
-<li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-{% if flag %}
-<li class="breadcrumb-item"><a href="{% url 'categories' %}">Categories</a></li> {% endif %}
-<li class="breadcrumb-item"><a href="{% url 'all_events' %}">Events</a></li>
 <li class="breadcrumb-item active">{{ event.name }}</li>
 {% endblock %} {% block content %}
 
@@ -72,15 +68,19 @@
                                     <h6>{% if user.is_authenticated and not event.created_by == user %}
                                         <form method="post" novalidate>
                                             {% csrf_token %}
-                                            <button name='Like' type="submit">Like <i class="fas fa-thumbs-up fa-beat fa-1x "></i> </button>
-                                            <!--<div class="like-btn" style="display: inline">
-                                                <a href="javascript:void();" id="like" {% if liked %} style="margin-right: 5px; color: #7c071b" {% else %} style="margin-right: 10px; color: #726f6f" {% endif %} onclick="Like({{ event.pk }};">
-                                                    <div class="fa-stack fa-2x" style="margin-right: 10px">
-                                                        <i class="fa fa-heart fa-stack-2x"></i>
-                                                    </div>
-                                                </a>
-                                            </div> -->{% if not event.is_occured %} <button name='Attend' type="submit">Attend <i class="fa fa-plus" aria-hidden="true"></i></button> {%endif %}
-                                        </form> <br> {% endif %} {{event.get_likes_count}} likes / {{event.get_attendees_count}} attendees
+                                            <!--<button name='Like' type="submit">Like <i class="fas fa-thumbs-up fa-beat fa-1x "></i> </button> -->
+                                            {% if liked %}<input font-family: FontAwesome; type="button" id="like" data-id="{{event.pk}}" value="Unlike"> <i class="fas fa-thumbs-up fa-beat fa-1x "> </i></input>
+                                            {% else %} <input font-family: FontAwesome; type="button" id="like" data-id="{{event.pk}}" value="Like"> <i class="fas fa-thumbs-up fa-beat fa-1x "> </i>
+                                            </input> {% endif %} {% if not event.is_occured %}
+                                            <!-- <button name='Attend' type="submit">Attend <i class="fa fa-plus" aria-hidden="true"></i></button> -->
+                                            {% if attended %} <input type="button" id="attend" data-id="{{event.pk}}" value=" Attended"> <i class="fa fa-plus "> </i></input>
+                                            {% else %} <input type="button" id="attend" data-id="{{event.pk}}" value="Attend"> <i class="fa fa-plus"> </i>
+                                            </input> {% endif %} {%endif %}
+                                        </form> <br>{% endif %}
+                                        <a id="like-number"> {{event.get_likes_count}}</a>
+                                        <a> likes /</a>
+                                        </a>
+                                        <a id="attendee-number"> {{event.get_attendees_count}} </a> <a> attendees </a>
                                     </h6>
                                 </div>
                             </div>
@@ -90,9 +90,6 @@
                         <h5> {{event.get_replies_count}} Replies</h5>
                         <a href="{% url 'new_reply' event.pk %}" class="leave-btn">New Reply <i class="fa fa-reply" aria-hidden="true"></i></a> {% for reply in event.replies.all %}
                         <div class="blog__comment__item">
-                            <div class="blog__comment__item__pic">
-                                <img src="img/blog/details/comment-1.jpg" alt="">
-                            </div>
                             <div class="blog__comment__item__text">
                                 <h6>{{reply.created_by}}</h6>
                                 <p>{{reply.message}}</p>
@@ -116,22 +113,78 @@
                             <h4>Appreciations</h4>
                         </div>
                         {% for attendee in attendees %}
-                        <a href="{% url 'account' attendee.user.id %}" class="blog__feature__item">
+                        <a class="blog__feature__item">
                             <div class="blog__feature__item__pic">
-                                <img src="img/blog/sidebar/fp-1.jpg" alt="">
+                                <div class="rating ">{% with ''|center:attendee.appreciation_level as range %} {% for i in range %}
+                                    <i class="fa fa-star "></i> {% endfor %} {% endwith %}
+                                </div>
                             </div>
                             <div class="blog__feature__item__text">
-                                <h6>{{attendee.user.username}}</h6>
+                                <h6 href="{% url 'account' attendee.user.id %}">{{attendee.user.username}}</h6>
                                 <span>{{attendee.appreciation_at}}</span>
                             </div>
-                        </a>
-                        {% endfor %} {% endif %}
+                        </a> {% endfor %} {% endif %}
                     </div>
                     </a>
                 </div>
             </div>
         </div>
     </div>
-    </div>
+
 </section>
+
+<script>
+    $('#like').click(function(e) {
+        var a = $(this);
+        $.ajax({
+            type: "POST",
+            url: "{% url 'like' %}",
+            data: {
+                'event_pk': '{{event.pk}}',
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            dataType: "json",
+            success: function(response) {
+                if (a.val() === 'Like') {
+                    a.val('Unlike')
+                } else {
+                    a.val('Like')
+                }
+                $("#like-number").html(response.count)
+                console.log(response)
+            },
+            error: function(rs, e) {
+                alert(rs.responseText);
+            }
+        });
+    })
+</script>
+
+<script>
+    $('#attend').click(function() {
+        var a = $(this);
+        $.ajax({
+            type: "POST",
+            url: "{% url 'attend' %}",
+            data: {
+                'event_pk': '{{event.pk}}',
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            dataType: "json",
+            success: function(response) {
+                if (a.val() === 'Attend') {
+                    a.val('Attended')
+                } else {
+                    a.val('Attend')
+                }
+                $("#attendee-number").html(response.count)
+                console.log(response)
+            },
+            error: function(rs, e) {
+                alert(rs.responseText);
+            }
+        });
+    })
+</script>
+
 {% endblock %}

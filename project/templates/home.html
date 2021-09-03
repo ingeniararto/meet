@@ -1,6 +1,39 @@
 {% extends 'base.html' %}{% load static %}{% load widget_tweaks %} {% block content %}
 
 
+<!-- Banner Section Begin -->
+<section class="banner set-bg " data-setbg="{% static 'img/banner/banner-new.jpg' %} ">
+    <div class="container ">
+        <div class="row ">
+            <div class="col-xl-7 col-lg-8 m-auto ">
+                <div class="banner__slider owl-carousel ">
+                    <div class="banner__item ">
+                        <div class="banner__text ">
+                            <span>The Meet</span>
+                            <h1>Meet people online</h1>
+                            <a href="{% url 'new_event' %} ">Create an event now</a>
+                            <br>
+                            <br>
+                            <a href="# ">Attend an event now</a>
+                        </div>
+                    </div>
+                    <div class="banner__item ">
+                        <div class="banner__text ">
+                            <span>The Meet</span>
+                            <h1>Meet people face-to-face</h1>
+                            <a href="{% url 'new_event' %} ">Create an event now</a>
+                            <br>
+                            <br>
+                            <a href="# ">Attend an event now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Banner Section End -->
+
 <!-- Categories Section Begin -->
 <section class="categories">
     <div class="container-fluid">
@@ -8,9 +41,9 @@
             <div class="col-lg-6 p-0">
                 <div class="categories__item categories__large__item set-bg" data-setbg="{{ concert.photo }}">
                     <div class="categories__text">
-                        <h1>Concert</h1>
-                        <p>{{concert.get_number_of_events}} events</p>
-                        <a href="{% url 'category' concert.id%}">Attend an event now</a>
+                        <h1 style="color:rgb(0, 0, 0); background-color: rgba(223, 223, 223, 0.411);">Concert</h1>
+                        <p style="color:rgb(0, 0, 0); background-color: rgba(223, 223, 223, 0.411);">{{concert.get_number_of_events}} events</p>
+                        <a style="background-color: rgba(223, 223, 223, 0.411);" href="{% url 'category' concert.id%}">Attend an event now</a>
                     </div>
                 </div>
             </div>
@@ -19,36 +52,36 @@
                     <div class="col-lg-6 col-md-6 col-sm-6 p-0">
                         <div class="categories__item set-bg" data-setbg="{{ food.photo }}">
                             <div class="categories__text">
-                                <h4>Food</h4>
-                                <p>{{food.get_number_of_events}} events</p>
-                                <a href="{% url 'category' food.id%}">Attend an event now</a>
+                                <h4 style="color:rgb(0, 0, 0); background-color: rgba(223, 223, 223, 0.411);">Food</h4>
+                                <p style="color:rgb(0, 0, 0); background-color: rgba(223, 223, 223, 0.411);">{{food.get_number_of_events}} events</p>
+                                <a style="background-color: rgba(223, 223, 223, 0.411);" href="{% url 'category' food.id%}">Attend an event now</a>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 p-0">
                         <div class="categories__item set-bg" data-setbg="{{ party.photo }}">
                             <div class="categories__text">
-                                <h4>Party</h4>
-                                <p>{{party.get_number_of_events}} events</p>
-                                <a href="{% url 'category' party.id%}">Attend an event now</a>
+                                <h4 style="color:rgb(0, 0, 0); background-color: rgba(223, 223, 223, 0.411);">Party</h4>
+                                <p style="color:rgb(0, 0, 0); background-color: rgba(223, 223, 223, 0.411);">{{party.get_number_of_events}} events</p>
+                                <a style="background-color: rgba(223, 223, 223, 0.411);" href="{% url 'category' party.id%}">Attend an event now</a>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 p-0">
                         <div class="categories__item set-bg" data-setbg="{{ sport.photo }}">
                             <div class="categories__text">
-                                <h4>Sport</h4>
-                                <p>{{sport.get_number_of_events}} events</p>
-                                <a href="{% url 'category' sport.id%}">Attend an event now</a>
+                                <h4 style="color:rgb(0, 0, 0); background-color: rgba(223, 223, 223, 0.411);">Sport</h4>
+                                <p style="color:rgb(0, 0, 0); background-color: rgba(223, 223, 223, 0.411);">{{sport.get_number_of_events}} events</p>
+                                <a style="background-color: rgba(223, 223, 223, 0.411);" href="{% url 'category' sport.id%}">Attend an event now</a>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 p-0">
                         <div class="categories__item set-bg" data-setbg="{{ study.photo }}">
                             <div class="categories__text">
-                                <h4>Study</h4>
-                                <p>{{study.get_number_of_events}} events</p>
-                                <a href="{% url 'category' study.id%}">Attend an event now</a>
+                                <h4 style="color:rgb(0, 0, 0); background-color: rgba(223, 223, 223, 0.411);">Study</h4>
+                                <p style="color:rgb(0, 0, 0); background-color: rgba(223, 223, 223, 0.411);">{{study.get_number_of_events}} events</p>
+                                <a style="background-color: rgba(223, 223, 223, 0.411);" href="{% url 'category' study.id%}">Attend an event now</a>
                             </div>
                         </div>
                     </div>
@@ -79,7 +112,7 @@
                             <div class="label new">New</div>
                             <ul class="product__hover">
                                 <li><a href="{{ event.event_picture.url }}" class="image-popup"><span class="arrow_expand"></span></a></li>
-                                <li><a href="#"><span class="icon_heart_alt"></span>  {{ event.get_likes_count }}</a></li>
+                                <li><a><span id='like' data-id='{{event.pk}}' class="icon_heart_alt"></span>  {{ event.get_likes_count }}</a></li>
                                 <li><a href="{% url 'new_reply' event.pk %}"><span class="fa fa-reply"></span>  {{ event.get_replies_count }} </a></li>
                             </ul>
                         </div>
@@ -110,19 +143,21 @@
                     {% if event.event_picture %}
                     <div class="product__item__pic set-bg" data-setbg="{{ event.event_picture.url }}"> {% else %}
                         <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/no_image.png' %}"> {% endif %}
-                            <div class="label new">New</div>
+                            <div class="label stockout">{{event.date}}</div>
                             <ul class="product__hover">
                                 <li><a href="{{ event.event_picture.url }}" class="image-popup"><span class="arrow_expand"></span></a></li>
-                                <li><a href="#"><span class="icon_heart_alt"></span>  {{ event.get_likes_count }}</a></li>
-                                <li><a href="{% url 'new_reply' event.pk %}"><span class="fa fa-reply"></span>  {{ event.get_replies_count }} </a></li>
+                                <li> <a><span id='like' data-id='{{event.pk}}' class="icon_heart_alt "></span>  {{ event.get_likes_count }}</a></li>
+                                <li><a href="{% url 'new_reply' event.pk %} "><span class="fa fa-reply "></span>  {{ event.get_replies_count }} </a></li>
                             </ul>
                         </div>
-                        <div class="product__item__text">
-                            <h6><a href="{% url 'event' event.pk %}">{{event.name}}</a></h6>
-                            <div class="rating">
+                        <div class="product__item__text ">
+                            <h6><a href="{% url 'event' event.pk %} ">{{event.name}}</a></h6>
+                            {% if event.get_appreciation_level == 0 %}
+                            <br> {% else %}
+                            <div class="rating ">
                                 {% with ''|center:event.get_appreciation_level as range %} {% for i in range %}
-                                <i class="fa fa-star"></i> {% endfor %} {% endwith %}</div>
-                            <div class="product__price">{% if event.payment_type == 'Not free' %} {{event.payment}} TL {% else %} {{ event.payment_type }} {% endif %}</div>
+                                <i class="fa fa-star "></i> {% endfor %} {% endwith %}</div> {% endif %}
+                            <div class="product__price ">{% if event.payment_type == 'Not free' %} {{event.payment}} TL {% else %} {{ event.payment_type }} {% endif %}</div>
                         </div>
                     </div>
                 </div>
@@ -131,149 +166,117 @@
         </div>
 </section>
 
-<!-- Banner Section Begin -->
-<section class="banner set-bg" data-setbg="{% static 'img/banner/banner-new.jpg' %}">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-7 col-lg-8 m-auto">
-                <div class="banner__slider owl-carousel">
-                    <div class="banner__item">
-                        <div class="banner__text">
-                            <span>The Meet</span>
-                            <h1>Meet people online</h1>
-                            <a href="{% url 'new_event' %}">Create an event now</a>
-                            <br>
-                            <br>
-                            <a href="#">Attend an event now</a>
-                        </div>
-                    </div>
-                    <div class="banner__item">
-                        <div class="banner__text">
-                            <span>The Meet</span>
-                            <h1>Meet people face-to-face</h1>
-                            <a href="{% url 'new_event' %}">Create an event now</a>
-                            <br>
-                            <br>
-                            <a href="#">Attend an event now</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Banner Section End -->
 
 <!-- Trend Section Begin -->
-<section class="trend spad">
-    <div class="container">
-        <div class="row">
-            <!--<div class="col-lg-6 col-md-4 col-sm-6">
-                <div class="trend__content">
-                    <div class="section-title">
+<section class="trend spad ">
+    <div class="container ">
+        <div class="row ">
+            <!--<div class="col-lg-6 col-md-4 col-sm-6 ">
+                <div class="trend__content ">
+                    <div class="section-title ">
                         <h4>Hot Events</h4>
                     </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="{% static 'img/trend/ht-1.jpg' %}" alt="">
+                    <div class="trend__item ">
+                        <div class="trend__item__pic ">
+                            <img src="{% static 'img/trend/ht-1.jpg' %} " alt=" ">
                         </div>
-                        <div class="trend__item__text">
+                        <div class="trend__item__text ">
                             <h6>Chain bucket bag</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
+                            <div class="rating ">
+                                <i class="fa fa-star "></i>
+                                <i class="fa fa-star "></i>
+                                <i class="fa fa-star "></i>
+                                <i class="fa fa-star "></i>
+                                <i class="fa fa-star "></i>
                             </div>
-                            <div class="product__price">$ 59.0</div>
+                            <div class="product__price ">$ 59.0</div>
                         </div>
                     </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="{% static 'img/trend/ht-2.jpg' %}" alt="">
+                    <div class="trend__item ">
+                        <div class="trend__item__pic ">
+                            <img src="{% static 'img/trend/ht-2.jpg' %} " alt=" ">
                         </div>
-                        <div class="trend__item__text">
+                        <div class="trend__item__text ">
                             <h6>Pendant earrings</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
+                            <div class="rating ">
+                                <i class="fa fa-star "></i>
+                                <i class="fa fa-star "></i>
+                                <i class="fa fa-star "></i>
+                                <i class="fa fa-star "></i>
+                                <i class="fa fa-star "></i>
                             </div>
-                            <div class="product__price">$ 59.0</div>
+                            <div class="product__price ">$ 59.0</div>
                         </div>
                     </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="{% static 'img/trend/ht-3.jpg' %}" alt="">
+                    <div class="trend__item ">
+                        <div class="trend__item__pic ">
+                            <img src="{% static 'img/trend/ht-3.jpg' %} " alt=" ">
                         </div>
-                        <div class="trend__item__text">
+                        <div class="trend__item__text ">
                             <h6>Cotton T-Shirt</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
+                            <div class="rating ">
+                                <i class="fa fa-star "></i>
+                                <i class="fa fa-star "></i>
+                                <i class="fa fa-star "></i>
+                                <i class="fa fa-star "></i>
+                                <i class="fa fa-star "></i>
                             </div>
-                            <div class="product__price">$ 59.0</div>
+                            <div class="product__price ">$ 59.0</div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 col-md-4 col-sm-6">
-                <div class="trend__content">
-                    <div class="section-title">
+            <div class="col-lg-6 col-md-4 col-sm-6 ">
+                <div class="trend__content ">
+                    <div class="section-title ">
                         <h4>Best Events</h4>
                     </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="{% static 'img/trend/bs-1.jpg' %}" alt="">
+                    <div class="trend__item ">
+                        <div class="trend__item__pic ">
+                            <img src="{% static 'img/trend/bs-1.jpg' %} " alt=" ">
                         </div>
-                        <div class="trend__item__text">
+                        <div class="trend__item__text ">
                             <h6>Cotton T-Shirt</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
+                            <div class="rating ">
+                                <i class="fa fa-star "></i>
+                                <i class="fa fa-star "></i>
+                                <i class="fa fa-star "></i>
+                                <i class="fa fa-star "></i>
+                                <i class="fa fa-star "></i>
                             </div>
-                            <div class="product__price">$ 59.0</div>
+                            <div class="product__price ">$ 59.0</div>
                         </div>
                     </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="{% static 'img/trend/bs-2.jpg' %}" alt="">
+                    <div class="trend__item ">
+                        <div class="trend__item__pic ">
+                            <img src="{% static 'img/trend/bs-2.jpg' %} " alt=" ">
                         </div>
-                        <div class="trend__item__text">
+                        <div class="trend__item__text ">
                             <h6>Zip-pockets pebbled tote <br />briefcase</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
+                            <div class="rating ">
+                                <i class="fa fa-star "></i>
+                                <i class="fa fa-star "></i>
+                                <i class="fa fa-star "></i>
+                                <i class="fa fa-star "></i>
+                                <i class="fa fa-star "></i>
                             </div>
-                            <div class="product__price">$ 59.0</div>
+                            <div class="product__price ">$ 59.0</div>
                         </div>
                     </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="{% static 'img/trend/bs-3.jpg' %}" alt="">
+                    <div class="trend__item ">
+                        <div class="trend__item__pic ">
+                            <img src="{% static 'img/trend/bs-3.jpg' %} " alt=" ">
                         </div>
-                        <div class="trend__item__text">
+                        <div class="trend__item__text ">
                             <h6>Round leather bag</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
+                            <div class="rating ">
+                                <i class="fa fa-star "></i>
+                                <i class="fa fa-star "></i>
+                                <i class="fa fa-star "></i>
+                                <i class="fa fa-star "></i>
+                                <i class="fa fa-star "></i>
                             </div>
-                            <div class="product__price">$ 59.0</div>
+                            <div class="product__price ">$ 59.0</div>
                         </div>
                     </div>
                 </div> 
@@ -282,5 +285,28 @@
         </div>
     </div>
 </section>
+
+<!--<script>
+    $('#like').click(function(e) {
+        var a = $(this);
+        var event_pk = $(this).data('id');
+        $.ajax({
+            type: "POST ",
+            url: "{% url 'like' %} ",
+            data: {
+                'event_pk': '{{event_pk}}',
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            dataType: "json ",
+            success: function(response) {
+                console.log(event_pk)
+                console.log(response)
+            },
+            error: function(rs, e) {
+                alert(rs.responseText);
+            }
+        });
+    })
+</script> -->
 <!-- Trend Section End -->
 {% endblock %}

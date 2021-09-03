@@ -8,8 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/star.css' %}">
-    <link rel="stylesheet" href="{% static 'css/app.css' %}">{% block stylesheet %}{% endblock %}
+    <link rel="stylesheet" href="{% static 'css/app.css' %}"> {% block stylesheet %}{% endblock %}
     <script src="https://kit.fontawesome.com/c6e6d54a26.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <meta name="description" content="Ashion Template">
     <meta name="keywords" content="Ashion, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,11 +44,11 @@
             <div class="offcanvas__close">+</div>
             <ul class="offcanvas__widget">
                 <li><span class="icon_search search-switch"></span></li>
-                <li><a href="#"><span class="icon_heart_alt"></span>
-                <div class="tip">2</div>
+                <li><a href="{% url 'liked_events' %}"><span class="icon_heart_alt"></span>
+                <!--<div class="tip">2</div>-->
             </a></li>
-                <li><a href="#"><span class="icon_bag_alt"></span>
-                <div class="tip">2</div>
+                <li><a href="#"><span class="fas fa-clipboard-check"></span>
+                <!--<div class="tip">2</div>-->
             </a></li>
             </ul>
             <div class="offcanvas__logo">
@@ -107,11 +108,11 @@
                             </li>
                             <ul class="header__right__widget">
                                 <li><span class="icon_search search-switch"></span></li>
-                                <li><a href="#"><span class="icon_heart_alt"></span>
-                                <div class="tip">2</div>
+                                <li><a href="{% url 'liked_events' %}"><span class="icon_heart_alt"></span>
+                                <!---<div class="tip"></div>-->
                             </a></li>
-                                <li><a href="#"><span class="icon_bag_alt"></span>
-                                <div class="tip">2</div>
+                                <li><a href="#"><span class="fas fa-clipboard-check"></span>
+                                <!---<div class="tip"></div>-->
                             </a></li>
                             </ul>
                         </ul>
@@ -132,11 +133,11 @@
 
                     <ul class="header__right__widget">
                         <li><span class="icon_search search-switch"></span></li>
-                        <li><a href="#"><span class="icon_heart_alt"></span>
-                                <div class="tip">2</div>
+                        <li><a href="{% url 'liked_events' %}"><span class="icon_heart_alt"></span>
+                                <!---<div class="tip"></div>-->
                             </a></li>
-                        <li><a href="#"><span class="icon_bag_alt"></span>
-                                <div class="tip">2</div>
+                        <li><a href="#"><span class="fas fa-clipboard-check"></span>
+                                <!---<div class="tip"></div>-->
                             </a></li>
                     </ul>
                 </div>
@@ -236,8 +237,8 @@
     <div class="search-model">
         <div class="h-100 d-flex align-items-center justify-content-center">
             <div class="search-close-switch">+</div>
-            <form class="search-model-form">
-                <input type="text" id="search-input" placeholder="Search here.....">
+            <form action="{% url 'search_results' %}" method="get" class="search-model-form">
+                <input name="item" type="text" id="search-input" placeholder="Search here.....">
             </form>
         </div>
     </div>

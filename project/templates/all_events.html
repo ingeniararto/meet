@@ -1,9 +1,8 @@
 {% extends 'base.html' %} {% load static %} {% block breadcrumb %}
-<li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
 <li class="breadcrumb-item active">Events</li>
 {% endblock %} {% block content %} {% if user.is_authenticated %}
 <div class="mb-4">
-    <a href="{% url 'new_event' %}" class="btn btn-primary">New event</a>
+    <h6><a href="{% url 'new_event' %}"> New event <i class="far fa-plus-square" aria-hidden="true"></i> </a></h6>
 </div>
 {% endif %}
 <section class="product spad">
@@ -31,7 +30,7 @@
                 <div class="product__item"> {% if event.event_picture %}
                     <div class="product__item__pic set-bg" data-setbg="{{ event.event_picture.url }}">{% else %}
                         <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/no_image.png' %}"> {% endif %}
-                            <div class="label new">{{ event.date }} </div>
+                            <div class="label stockblue">{{ event.date }} </div>
                             <ul class="product__hover">
                                 <li><a href="{{ event.event_picture.url }}" class="image-popup"><span class="arrow_expand"></span></a></li>
                                 <li><a href="#"><span class="icon_heart_alt"></span>  {{ event.get_likes_count }}</a></li>

@@ -24,7 +24,7 @@
                 <div class="product__item"> {% if liked_event.event.event_picture %}
                     <div class="product__item__pic set-bg" data-setbg="{{ liked_event.event.event_picture.url }}">{% else %}
                         <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/no_image.png' %}"> {% endif %}
-                            <div class="label new">{{ liked_event.event.date }} </div>
+                            <div class="label stockblue">{{ liked_event.event.date }} </div>
                             <ul class="product__hover">
                                 <li><a href="{{ liked_event.event.event_picture.url }}" class="image-popup"><span class="arrow_expand"></span></a></li>
                                 <li><a href="#"><span class="icon_heart_alt"></span>  {{ liked_event.event.get_likes_count }}</a></li>

@@ -1,6 +1,4 @@
 {% extends 'base.html' %} {% load static %} {% load bootstrap4 %} {% block title %}Edit event{% endblock %} {% block breadcrumb %}
-<li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-<li class="breadcrumb-item active" aria-current="page"><a href="{% url 'account' profile.user.id %}">My Account</a></li>
 <li class="breadcrumb-item active">Edit Profile</li>
 {% endblock %} {% block content %} {% if profile.user == user %}
 <form method="post" class="mb-4" novalidate enctype='multipart/form-data'>

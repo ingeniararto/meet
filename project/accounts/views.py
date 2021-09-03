@@ -7,6 +7,8 @@ from django.views import View
 import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import tzinfo
+import json
+from django.http.response import HttpResponse, JsonResponse
 
 # Create your views here.
 
@@ -41,6 +43,7 @@ class Account(View):
         wlt_attend_events = list()
         upcoming_events = profile.user.events.filter(date__gt = datetime.date.today())
         past_events = profile.user.events.filter(date__lte = datetime.date.today())
+        followed = Follower.objects.filter(follower=request.user.profile, followed_profile= profile)
         for attended_event in profile.user.attended_events.all() :
             if(attended_event.event.date <= datetime.datetime.now(attended_event.event.date.tzinfo)):
                 attended_events.append(attended_event)
@@ -48,7 +51,7 @@ class Account(View):
             if(attended_event.event.date > datetime.datetime.now(attended_event.event.date.tzinfo)):
                 wlt_attend_events.append(attended_event)
         return render(request, 'account.html', {'profile': profile, 'liked_events': liked_events, 
-            'attended_events': attended_events,'wlt_attend_events': wlt_attend_events, 'upcoming_events': upcoming_events, 'past_events': past_events})
+            'attended_events': attended_events,'wlt_attend_events': wlt_attend_events, 'upcoming_events': upcoming_events, 'past_events': past_events, 'followed': followed})
     def post(self, request, id):
         profile = get_object_or_404(Profile, user=get_object_or_404(User, id=id))
         if 'follow' in request.POST:
@@ -120,3 +123,22 @@ class WouldLikeToAttendView(LoginRequiredMixin, View):
             if(attended_event.event.date > datetime.datetime.now(attended_event.event.date.tzinfo)):
                 attended_events.append(attended_event)
         return render(request, 'wlt_attend_events.html', {'attended_events': attended_events})
+
+
+class FollowButtonAjax(LoginRequiredMixin, View):
+    def post(self, request):
+        user=request.user
+        profile = get_object_or_404(Profile, id= request.POST['profile_id'])
+        count = profile.get_num_of_followers()
+        follower = Follower.objects.filter(followed_profile = profile, follower=user.profile)
+        if not follower: 
+            is_followed = True
+            follower = Follower.objects.create(follower = request.user.profile, followed_profile = profile)
+            count = count + 1
+        else: 
+            is_followed= False
+            follower.delete()
+            count = count - 1
+        context={'is_followed':is_followed, 'count': count}
+        return HttpResponse(json.dumps(context), content_type='application/json')
+
