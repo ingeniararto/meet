@@ -1,7 +1,7 @@
 import datetime
 from os import name
-
-from django.http.response import HttpResponse, JsonResponse
+from django.core.paginator import Paginator
+from django.http.response import HttpResponse
 from accounts.models import Follower, LikedEvent, Profile
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Attendee, Event, Reply
@@ -25,12 +25,16 @@ class Home(View):
         latest_four_events =Event.objects.filter(date__gt = datetime.date.today()).order_by('-created_by' )[:4]
         past_four_events =Event.objects.filter(date__lte = datetime.date.today()).order_by('-date' )[:4]
         return render(request, 'home.html', {'events': events, 'categories': categories, 
-            'number_of_events': number_of_events,'concert' : concert, 'food': food, 'party': party,'sport': sport, 'study' : study, 'latest_events': latest_four_events, 'past_events': past_four_events})
+            'number_of_events': number_of_events,'concert' : concert, 'food': food, 'party': party,'sport': sport, 
+            'study' : study, 'latest_events': latest_four_events, 'past_events': past_four_events})
 
 class AllEvents(View):
     def get(self,request):
         events = Event.objects.all()
-        return render(request, 'all_events.html', {'events': events})
+        paginator = Paginator(events, 4)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, 'all_events.html', {'events': events, 'page_obj': page_obj})
 
 
 
@@ -43,7 +47,8 @@ class OneEvent(View):
         attended = Attendee.objects.filter(event=one_event, user=request.user)
         for i in range(one_event.get_appreciation_level()):
             appreciation_level.append(i)
-        return render(request, 'event.html', {'event': one_event, 'appreciation_level': appreciation_level, 'attendees': attendees, 'liked': liked, 'attended': attended})
+        return render(request, 'event.html', {'event': one_event, 'appreciation_level': appreciation_level,
+            'attendees': attendees, 'liked': liked, 'attended': attended})
     def post(self, request, pk):
         """user = request.user"""
         one_event = get_object_or_404(Event, pk=pk)
@@ -187,18 +192,18 @@ class LikeButtonAjax(LoginRequiredMixin, View):
     def post(self, request):
         user = request.user
         event=get_object_or_404(Event, pk=request.POST['event_pk'])
-        likes= LikedEvent.objects.filter(event=event, liked_by= user)
+        likes= LikedEvent.objects.filter(event=event, liked_by=user)
         count= event.get_likes_count()
         if likes:
             is_liked=False
             likes.delete()
             count = count -1
-            #print ('unliked')
+            print ('unliked')
         else:
             is_liked=True
             LikedEvent.objects.create(event=event, liked_by=user)
             count = count +1 
-            #print ('liked')
+            print ('liked')
         context={'is_liked':is_liked, 'count': count}
         return HttpResponse(json.dumps(context), content_type='application/json')
 
@@ -230,7 +235,9 @@ class SearchResultsView(View):
         results = Event.objects.filter(name__icontains=item)
         return render(request, 'search_results.html', {'results':results})
 
-
+class MapView(View):
+    def get(self, request):
+        return render(request, 'map.html')
 
     
 

@@ -3,8 +3,6 @@ from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE
 from categories.models import Category
 import datetime
-from datetime import timezone
-from django.contrib.contenttypes.fields import GenericRelation
 # Create your models here.
 
 
@@ -91,6 +89,11 @@ class Event(models.Model):
             return 0
         else:
             return int((appreciation_level*20)/count)
+
+    def get_place(self):
+        list_string = self.place.split(" ")
+        string = "+".join(list_string)
+        return "https://www.google.com/maps/embed/v1/place?key=AIzaSyD_0BqyEBXLFGblGbei2wEjghxr7nTRt9I&q="+string
 
 
 class Reply(models.Model):

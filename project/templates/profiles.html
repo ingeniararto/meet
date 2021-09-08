@@ -20,7 +20,16 @@
                             <tr>
                                 <td>
                                     <div class="d-flex flex-column "> {% if profile.profile_picture %}
-                                        <img src="{{ profile.get_image }}" alt="Admin" class="rounded-circle" width="150"> {% endif %}
+                                        <img style="  height: 150px;
+                    width: 150;
+                    object-fit: cover;
+                    border-radius: 80%;" src="{{ profile.profile_picture.url }}" alt="Admin" class="rounded-circle"> {% else %} {% if profile.gender == 'Male' %}<img style="  height: 150px;
+                    width: 150;
+                    object-fit: cover;
+                    border-radius: 80%;" src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="Admin" class="rounded-circle" width="150"> {% else %} {% if profile.gender == 'Female' %}<img style="  height: 150px;
+                        width: 150;
+                        object-fit: cover;
+                        border-radius: 80%;" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="Admin" class="rounded-circle" width="150"> {% endif %} {% endif %} {%endif%}
                                     </div>
                                 </td>
                                 <td>

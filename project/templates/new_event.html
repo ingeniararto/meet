@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% load static %} {% load bootstrap4 %} {% block title %}Plan an event{% endblock %} {% block breadcrumb %}
 <li class="breadcrumb-item active">Plan an event</li>
 {% endblock %} {% block content %}
-
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 <form method="post" class="mb-4" novalidate enctype='multipart/form-data'>
     {% csrf_token %} {% include 'includes/form.html' %} {% bootstrap_css %} {% bootstrap_javascript jquery='full' %} {{ form.media }}
     <button type="submit" class="btn btn-success">Plan a event</button>

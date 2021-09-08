@@ -23,8 +23,8 @@
                         <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/no_image.png' %}"> {% endif %}
                             <div class="label stockblue">{{ event.date }} </div>
                             <ul class="product__hover">
-                                <li><a href="img/product/product-1.jpg" class="image-popup"><span class="arrow_expand"></span></a></li>
-                                <li><a href="#"><span class="icon_heart_alt"></span>  {{ event.get_likes_count }}</a></li>
+                                <li><a href="img/product/product-1.jpg" class="image-popup"><span class="arrow_expand" style="margin-top:12px;"></span></a></li>
+                                <li><a><span class="icon_heart_alt"></span>  {{ event.get_likes_count }}</a></li>
                                 <li><a href="{% url 'new_reply' event.pk %}"><span class="fa fa-reply"></span>  {{ event.get_replies_count }} </a></li>
                             </ul>
                         </div>

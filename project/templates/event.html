@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% load static %} {% block title %} {{ event.name }} - {{ block.super }} {% endblock %} {% block breadcrumb %}
 <li class="breadcrumb-item active">{{ event.name }}</li>
-{% endblock %} {% block content %}
+{% endblock %} {% block stylesheet %} {% endblock %}{% block content %}
 
 <!-- Blog Details Section Begin -->
 <section class="blog-details spad">
@@ -43,6 +43,9 @@
                             </li>
                         </ul>
                     </div>
+                    <br>
+                    <br>
+                    <iframe width="730" height="450" style="border:0" loading="lazy" allowfullscreen src={{event.get_place}}></iframe>
                     <div class="blog__details__desc">
                     </div>
                     <div class="blog__details__tags">
@@ -75,7 +78,12 @@
                                             <!-- <button name='Attend' type="submit">Attend <i class="fa fa-plus" aria-hidden="true"></i></button> -->
                                             {% if attended %} <input type="button" id="attend" data-id="{{event.pk}}" value=" Attended"> <i class="fa fa-plus "> </i></input>
                                             {% else %} <input type="button" id="attend" data-id="{{event.pk}}" value="Attend"> <i class="fa fa-plus"> </i>
-                                            </input> {% endif %} {%endif %}
+                                            </input> {% endif %} {% else %}
+                                            <br>
+                                            <br>
+                                            <div class="blog__details__btn__item">
+                                                <h6><a href="{% url 'appreciation' event.pk %}"> Appreciate <i class="fas fa-star-half-alt" aria-hidden="true"></i> </a></h6>
+                                            </div> {% endif %}
                                         </form> <br>{% endif %}
                                         <a id="like-number"> {{event.get_likes_count}}</a>
                                         <a> likes /</a>

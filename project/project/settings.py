@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
 ]
 
 MIDDLEWARE = [
@@ -166,3 +165,6 @@ BOOTSTRAP4 = {
 MEDIA_ROOT = '/events/'
 
 MEDIA_URL = '/media/'
+
+GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyD_0BqyEBXLFGblGbei2wEjghxr7nTRt9I'
+

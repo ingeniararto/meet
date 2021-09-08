@@ -25,15 +25,15 @@
             </div>
         </div>
         <div class="row property__gallery">
-            {% for event in events %}
+            {% for event in page_obj %}
             <div class="col-lg-3 col-md-4 col-sm-6 mix {{event.category.name}}">
                 <div class="product__item"> {% if event.event_picture %}
                     <div class="product__item__pic set-bg" data-setbg="{{ event.event_picture.url }}">{% else %}
                         <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/no_image.png' %}"> {% endif %}
                             <div class="label stockblue">{{ event.date }} </div>
                             <ul class="product__hover">
-                                <li><a href="{{ event.event_picture.url }}" class="image-popup"><span class="arrow_expand"></span></a></li>
-                                <li><a href="#"><span class="icon_heart_alt"></span>  {{ event.get_likes_count }}</a></li>
+                                <li><a href="{{ event.event_picture.url }}" class="image-popup"><span class="arrow_expand" style="margin-top:12px;"></span></a></li>
+                                <li><a><span class="icon_heart_alt"></span>  {{ event.get_likes_count }}</a></li>
                                 <li><a href="{% url 'new_reply' event.pk %}"><span class="fa fa-reply"></span>  {{ event.get_replies_count }} </a></li>
                             </ul>
                         </div>
@@ -44,6 +44,19 @@
                     </div>
                 </div>
                 {% endfor %}
+            </div>
+            <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span> {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a> {% endif %}
+                </span>
             </div>
         </div>
 </section>

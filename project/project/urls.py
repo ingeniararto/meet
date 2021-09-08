@@ -87,13 +87,14 @@ urlpatterns = [
         accounts_views.ProfilesView.as_view(), name='profiles'),
 
     path('liked_events/', accounts_views.LikedEventsView.as_view(), name='liked_events'),
-    path('would_like_to_attend_events/', accounts_views.WouldLikeToAttendView.as_view(), name='wlt_attend_events'),
+    path('would_like_to_attend_events/', accounts_views.WouldLikeToAttendView.as_view(), 
+        name='wlt_attend_events'),
     path('event/<int:pk>/appreciation/', views.AppreciationView.as_view(), name='appreciation'),
 
     path('like/', views.LikeButtonAjax.as_view(), name='like'),
     path('attend/', views.AttendButtonAjax.as_view(), name='attend'),
     path('follow/', accounts_views.FollowButtonAjax.as_view(), name='follow'),
 
-    path('search/', views.SearchResultsView.as_view(), name='search_results')
+    path('search/', views.SearchResultsView.as_view(), name='search_results'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
