@@ -10,6 +10,7 @@ from categories.models import Category
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 import json
+from .kmeans import k_means_event
 
 
 class Home(View):
@@ -31,14 +32,15 @@ class Home(View):
 class AllEvents(View):
     def get(self,request):
         events = Event.objects.all()
-        paginator = Paginator(events, 4)
+        paginator = Paginator(events, 8)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
+        k_means_event(request.user)
         return render(request, 'all_events.html', {'events': events, 'page_obj': page_obj})
 
 
 
-class OneEvent(View):
+class OneEvent(LoginRequiredMixin, View):
     def get(self, request, pk):
         one_event = get_object_or_404(Event, pk=pk)
         liked = LikedEvent.objects.filter(event = one_event, liked_by=request.user)
@@ -86,7 +88,7 @@ class NewEvent(LoginRequiredMixin, View):
             one_event.save()
             return  redirect('all_events')
 
-class UpdateEventView(View):
+class UpdateEventView(LoginRequiredMixin, View):
     def get(self, request, pk):
         one_event = get_object_or_404(Event, pk=pk)
         form = UpdateEventForm(instance=one_event)
@@ -137,7 +139,7 @@ class NewReply(LoginRequiredMixin, View):
             return redirect('event', pk=pk)
 
 
-class UpdateReplyView(View):
+class UpdateReplyView(LoginRequiredMixin, View):
     def get(self, request, pk, id):
         reply = get_object_or_404(Reply, id=id)
         form = UpdateReplyForm(instance = reply)
@@ -227,6 +229,7 @@ class AttendButtonAjax(LoginRequiredMixin, View):
             count = count +1 
             print ('attended')
         context={'is_attended':is_attended, 'count': count}
+        recommendations = user.profile.get_recommendations()
         return HttpResponse(json.dumps(context), content_type='application/json')
 
 class SearchResultsView(View):
@@ -235,9 +238,6 @@ class SearchResultsView(View):
         results = Event.objects.filter(name__icontains=item)
         return render(request, 'search_results.html', {'results':results})
 
-class MapView(View):
-    def get(self, request):
-        return render(request, 'map.html')
 
     
 

@@ -19,9 +19,17 @@
                         <tbody>{% for follower in followers %}
                             <tr>
                                 <td>
-                                    <div class="d-flex flex-column "> {% if profile.profile_picture %}
-                                        <img src="{{ profile.profile_picture.url }}" alt="Admin" class="rounded-circle" width="150"> {% endif %}
-                                    </div>
+                                    <div class="d-flex flex-column "> {% if follower.follower.profile_picture %}
+                                        <img style="  height: 150px;
+                    width: 150;
+                    object-fit: cover;
+                    border-radius: 80%;" src="{{ follower.follower.profile_picture.url }}" alt="Admin" class="rounded-circle"> {% else %} {% if follower.follower.gender == 'Male' %}<img style="  height: 150px;
+                    width: 150;
+                    object-fit: cover;
+                    border-radius: 80%;" src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="Admin" class="rounded-circle" width="150"> {% else %} {% if follower.follower.gender == 'Female' %}<img style="  height: 150px;
+                        width: 150;
+                        object-fit: cover;
+                        border-radius: 80%;" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="Admin" class="rounded-circle" width="150"> {% endif %} {% endif %} {%endif%}
                                 </td>
                                 <td>
                                     <div class="cart__product__item__title">
@@ -33,8 +41,8 @@
                             </tr>{% endfor %}
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>
-        </div>
 </section>
 {% endblock %}

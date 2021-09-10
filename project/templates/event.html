@@ -36,7 +36,7 @@
                                 <span>Quota: </span> {{ event.get_attendees_count }} / {{ event.max_num_of_attendees }}
                             </li>
                             <li>
-                                {% if not event.is_online %}<span> Place :</span> {{ event.place }}{% endif %}
+                                {% if not event.is_online %}<span> Place :</span> {{ event.place }} {% else %} <span> Platform :</span> {{ event.place }}{% endif %}
                             </li>
                             <li>
                                 <span>Payment :</span> {% if event.payment_type == 'Not free' %} {{event.payment}} TL {% else %} {{ event.payment_type }} {% endif %}
@@ -44,8 +44,8 @@
                         </ul>
                     </div>
                     <br>
-                    <br>
-                    <iframe width="730" height="450" style="border:0" loading="lazy" allowfullscreen src={{event.get_place}}></iframe>
+                    <br> {% if not event.is_online %}
+                    <iframe width="730" height="450" style="border:0" loading="lazy" allowfullscreen src={{event.get_place}}></iframe>{%endif%}
                     <div class="blog__details__desc">
                     </div>
                     <div class="blog__details__tags">
@@ -80,10 +80,10 @@
                                             {% else %} <input type="button" id="attend" data-id="{{event.pk}}" value="Attend"> <i class="fa fa-plus"> </i>
                                             </input> {% endif %} {% else %}
                                             <br>
-                                            <br>
+                                            <br> {% if attended %}
                                             <div class="blog__details__btn__item">
                                                 <h6><a href="{% url 'appreciation' event.pk %}"> Appreciate <i class="fas fa-star-half-alt" aria-hidden="true"></i> </a></h6>
-                                            </div> {% endif %}
+                                            </div> {% endif %} {% endif %}
                                         </form> <br>{% endif %}
                                         <a id="like-number"> {{event.get_likes_count}}</a>
                                         <a> likes /</a>

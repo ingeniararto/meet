@@ -96,6 +96,8 @@ class Event(models.Model):
         return "https://www.google.com/maps/embed/v1/place?key=AIzaSyD_0BqyEBXLFGblGbei2wEjghxr7nTRt9I&q="+string
 
 
+
+
 class Reply(models.Model):
     event = models.ForeignKey(Event,on_delete=models.CASCADE , related_name='replies')
     message = models.TextField(max_length=4000)

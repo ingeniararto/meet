@@ -44,6 +44,7 @@ class Account(View):
         upcoming_events = profile.user.events.filter(date__gt = datetime.date.today())
         past_events = profile.user.events.filter(date__lte = datetime.date.today())
         followed = Follower.objects.filter(follower=request.user.profile, followed_profile= profile)
+        recommendations = profile.recommendations.all()
         for attended_event in profile.user.attended_events.all() :
             if(attended_event.event.date <= datetime.datetime.now(attended_event.event.date.tzinfo)):
                 attended_events.append(attended_event)
@@ -51,7 +52,7 @@ class Account(View):
             if(attended_event.event.date > datetime.datetime.now(attended_event.event.date.tzinfo)):
                 wlt_attend_events.append(attended_event)
         return render(request, 'account.html', {'profile': profile, 'liked_events': liked_events, 
-            'attended_events': attended_events,'wlt_attend_events': wlt_attend_events, 'upcoming_events': upcoming_events, 'past_events': past_events, 'followed': followed})
+            'attended_events': attended_events,'wlt_attend_events': wlt_attend_events, 'upcoming_events': upcoming_events, 'past_events': past_events, 'followed': followed, 'recommended_events': recommendations})
     def post(self, request, id):
         profile = get_object_or_404(Profile, user=get_object_or_404(User, id=id))
         if 'follow' in request.POST:
